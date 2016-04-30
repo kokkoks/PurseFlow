@@ -14,6 +14,7 @@ import com.suttanan.kok.purseflow.fragments.HomeFragment;
 import com.suttanan.kok.purseflow.fragments.InformaionFragment;
 import com.suttanan.kok.purseflow.fragments.VisualizationFragment;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,6 @@ public class MainActivity extends ActionBarActivity{
         listFragments.add(new HomeFragment());
         listFragments.add(new InformaionFragment());
         listFragments.add(new VisualizationFragment());
-
         MyFragmentPagerAdapter myFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), listFragments);
         viewPager.setAdapter(myFragmentPagerAdapter);
     }
