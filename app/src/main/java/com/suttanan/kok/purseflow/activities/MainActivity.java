@@ -31,29 +31,14 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
         initTabHost();
     }
 
-    private void initTabHost() {
-        tabHost = (TabHost) findViewById(R.id.tabHost);
-        tabHost.setup();
-
-        String[] tabNames = {"Home", "Information", "Visual"};
-
-        for(int i = 0; i < tabNames.length; i++){
-            TabHost.TabSpec tabSpec;
-            tabSpec = tabHost.newTabSpec(tabNames[i]);
-            tabSpec.setIndicator(tabNames[i]);
-            tabSpec.setContent(new FakeContent(getApplicationContext()));
-            tabHost.addTab(tabSpec);
-        }
-    }
-
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
     }
 
     @Override
-    public void onPageSelected(int position) {
-
+    public void onPageSelected(int selectedPage) {
+        tabHost.setCurrentTab(selectedPage);
     }
 
     @Override
@@ -63,7 +48,8 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
 
     @Override
     public void onTabChanged(String tabId) {
-        
+        int selectedPage = tabHost.getCurrentTab();
+        viewPager.setCurrentItem(selectedPage);
     }
 
     public class FakeContent implements TabHost.TabContentFactory{
@@ -83,6 +69,22 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
         }
     }
 
+    private void initTabHost() {
+        tabHost = (TabHost) findViewById(R.id.tabHost);
+        tabHost.setup();
+
+        String[] tabNames = {"Home", "Information", "Visual"};
+
+        for(int i = 0; i < tabNames.length; i++){
+            TabHost.TabSpec tabSpec;
+            tabSpec = tabHost.newTabSpec(tabNames[i]);
+            tabSpec.setIndicator(tabNames[i]);
+            tabSpec.setContent(new FakeContent(getApplicationContext()));
+            tabHost.addTab(tabSpec);
+        }
+        tabHost.setOnTabChangedListener(this);
+    }
+
     private void initViewPagers(){
         viewPager = (ViewPager)findViewById(R.id.view_pager);
 
@@ -92,5 +94,6 @@ public class MainActivity extends ActionBarActivity implements ViewPager.OnPageC
         listFragments.add(new VisualizationFragment());
         MyFragmentPagerAdapter myFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), listFragments);
         viewPager.setAdapter(myFragmentPagerAdapter);
+        viewPager.setOnPageChangeListener(this);
     }
 }
