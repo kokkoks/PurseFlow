@@ -38,6 +38,5 @@ public class MainActivity extends AppCompatActivity{
         actionBar.addTab(infoTab);
         actionBar.addTab(visualTab);
         actionBar.selectTab(homeTab);
-
     }
 }
