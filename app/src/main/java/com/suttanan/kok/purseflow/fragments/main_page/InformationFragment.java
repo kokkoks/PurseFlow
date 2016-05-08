@@ -1,4 +1,4 @@
-package com.suttanan.kok.purseflow.fragments;
+package com.suttanan.kok.purseflow.fragments.main_page;
 
 import android.content.Context;
 import android.os.Bundle;

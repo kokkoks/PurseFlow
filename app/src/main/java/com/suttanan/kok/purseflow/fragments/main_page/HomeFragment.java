@@ -1,4 +1,4 @@
-package com.suttanan.kok.purseflow.fragments;
+package com.suttanan.kok.purseflow.fragments.main_page;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.suttanan.kok.purseflow.R;
+import com.suttanan.kok.purseflow.activities.AddingActivity;
 import com.suttanan.kok.purseflow.activities.LoginActivity;
 
 /**
@@ -33,6 +34,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        currencyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), AddingActivity.class);
                 startActivity(intent);
             }
         });

@@ -1,4 +1,4 @@
-package com.suttanan.kok.purseflow.fragments;
+package com.suttanan.kok.purseflow.fragments.main_page;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
