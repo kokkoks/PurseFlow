@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.adapters.SupportFragmentTabListener;
-import com.suttanan.kok.purseflow.fragments.add_page.ExpansesFragment;
+import com.suttanan.kok.purseflow.fragments.add_page.ExpensesFragment;
 import com.suttanan.kok.purseflow.fragments.add_page.IncomesFragment;
 
 
@@ -27,7 +27,7 @@ public class AddingActivity extends AppCompatActivity {
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setDisplayShowTitleEnabled(true);
 
-        ActionBar.Tab expanseTab = actionBar.newTab().setText("Expenses").setTabListener(new SupportFragmentTabListener<ExpansesFragment>(this, "Expenses", ExpansesFragment.class));
+        ActionBar.Tab expanseTab = actionBar.newTab().setText("Expenses").setTabListener(new SupportFragmentTabListener<ExpensesFragment>(this, "Expenses", ExpensesFragment.class));
         ActionBar.Tab incomeTab = actionBar.newTab().setText("Incomes").setTabListener(new SupportFragmentTabListener<IncomesFragment>(this, "Information", IncomesFragment.class));
 
 
