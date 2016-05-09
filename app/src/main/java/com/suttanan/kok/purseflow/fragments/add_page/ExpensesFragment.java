@@ -1,5 +1,6 @@
 package com.suttanan.kok.purseflow.fragments.add_page;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suttanan.kok.purseflow.R;
+import com.suttanan.kok.purseflow.activities.AddingDescriptionActivity;
+import com.suttanan.kok.purseflow.others.TransactionType;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,7 +23,7 @@ import butterknife.OnClick;
  * Created by KOKKOK on 5/8/2016.
  */
 public class ExpensesFragment extends Fragment{
-    @BindView(R.id.adding_expenses_value) TextView valueTextVIew;
+    @BindView(R.id.adding_expenses_value) TextView valueTextView;
 
     @BindView(R.id.adding_expenses_foodBtn) Button foodBtn;
     @BindView(R.id.adding_expenses_shopBtn) Button shopBtn;
@@ -48,15 +51,30 @@ public class ExpensesFragment extends Fragment{
 
     private String value;
     private String category;
+    /*
+    0 = Type (expenses or incomes)
+    1 = value
+    2 = category
+    3 = date
+    4 = description
+    */
+    private String[] transaction;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.adding_expense_layout, container, false);
         ButterKnife.bind(this, v);
-        value = "";
-        valueTextVIew.setText("0.0");
+
+        initComponents();
 
         return v;
+    }
+
+    private void initComponents(){
+        transaction = new String[5];
+        value = "";
+        valueTextView.setText("0.0");
     }
 
     @OnClick({R.id.adding_expenses_foodBtn, R.id.adding_expenses_shopBtn,
@@ -76,7 +94,7 @@ public class ExpensesFragment extends Fragment{
             R.id.adding_expenses_8Btn, R.id.adding_expenses_9Btn})
     public void InputNumber(Button button){
         value += button.getText().toString();
-        valueTextVIew.setText(value);
+        valueTextView.setText(value);
         Toast.makeText(this.getContext(), value, Toast.LENGTH_LONG).show();
     }
 
@@ -84,9 +102,17 @@ public class ExpensesFragment extends Fragment{
     public void DeleteNumber(Button button){
         if(value.length() > 0){
             value = value.substring(0, value.length()-1);
-            valueTextVIew.setText(value);
+            valueTextView.setText(value);
         } else{
-            valueTextVIew.setText("0.0");
+            valueTextView.setText("0.0");
         }
+    }
+
+    @OnClick(R.id.adding_expenses_enterBtn)
+    public void EnterNextPage(Button button){
+        transaction[0] = String.valueOf(TransactionType.EXPENSES);
+        Toast.makeText(this.getContext(), transaction[0], Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
+        startActivity(intent);
     }
 }

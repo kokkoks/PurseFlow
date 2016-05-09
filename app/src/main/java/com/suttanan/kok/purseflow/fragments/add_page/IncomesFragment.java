@@ -1,5 +1,6 @@
 package com.suttanan.kok.purseflow.fragments.add_page;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.suttanan.kok.purseflow.R;
+import com.suttanan.kok.purseflow.activities.AddingDescriptionActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +26,7 @@ public class IncomesFragment extends Fragment {
 
     @BindView(R.id.adding_incomes_value)  TextView valueTextView;
 
-    @BindView(R.id.adding_incomes_saralyBtn)  Button saralyBtn;
+    @BindView(R.id.adding_incomes_salaryBtn)  Button salaryBtn;
     @BindView(R.id.adding_incomes_bussinessBtn) Button bussinessBtn;
     @BindView(R.id.adding_incomes_giftBtn) Button giftBtn;
     @BindView(R.id.adding_incomes_extraBtn) Button extraBtn;
@@ -58,7 +60,7 @@ public class IncomesFragment extends Fragment {
         return v;
     }
 
-    @OnClick({ R.id.adding_incomes_saralyBtn, R.id.adding_incomes_bussinessBtn,
+    @OnClick({ R.id.adding_incomes_salaryBtn, R.id.adding_incomes_bussinessBtn,
             R.id.adding_incomes_giftBtn, R.id.adding_incomes_extraBtn })
     public void SelectCategory(Button button) {
         String text = button.getText().toString();
@@ -85,5 +87,11 @@ public class IncomesFragment extends Fragment {
         } else{
             valueTextView.setText("0.0");
         }
+    }
+
+    @OnClick(R.id.adding_incomes_enterBtn)
+    public void EnterNextPage(Button button){
+        Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
+        startActivity(intent);
     }
 }
