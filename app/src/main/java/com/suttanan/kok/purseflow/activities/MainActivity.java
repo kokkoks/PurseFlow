@@ -8,9 +8,9 @@ import android.widget.TabHost;
 
 import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.adapters.SupportFragmentTabListener;
-import com.suttanan.kok.purseflow.fragments.HomeFragment;
-import com.suttanan.kok.purseflow.fragments.InformaionFragment;
-import com.suttanan.kok.purseflow.fragments.VisualizationFragment;
+import com.suttanan.kok.purseflow.fragments.main_page.HomeFragment;
+import com.suttanan.kok.purseflow.fragments.main_page.InformationFragment;
+import com.suttanan.kok.purseflow.fragments.main_page.VisualizationFragment;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -31,13 +31,12 @@ public class MainActivity extends AppCompatActivity{
         actionBar.setDisplayShowTitleEnabled(true);
 
         ActionBar.Tab homeTab = actionBar.newTab().setText("Home").setTabListener(new SupportFragmentTabListener<HomeFragment>(this, "Home", HomeFragment.class));
-        ActionBar.Tab infoTab = actionBar.newTab().setText("Information").setTabListener(new SupportFragmentTabListener<InformaionFragment>(this, "Information", InformaionFragment.class));
+        ActionBar.Tab infoTab = actionBar.newTab().setText("Information").setTabListener(new SupportFragmentTabListener<InformationFragment>(this, "Information", InformationFragment.class));
         ActionBar.Tab visualTab = actionBar.newTab().setText("Visual").setTabListener(new SupportFragmentTabListener<VisualizationFragment>(this, "Visual", VisualizationFragment.class));
 
         actionBar.addTab(homeTab);
         actionBar.addTab(infoTab);
         actionBar.addTab(visualTab);
         actionBar.selectTab(homeTab);
-
     }
 }

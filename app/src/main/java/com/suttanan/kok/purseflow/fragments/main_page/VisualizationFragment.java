@@ -1,4 +1,4 @@
-package com.suttanan.kok.purseflow.fragments;
+package com.suttanan.kok.purseflow.fragments.main_page;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,12 +12,12 @@ import com.suttanan.kok.purseflow.R;
 /**
  * Created by K.K.K on 4/30/2016.
  */
-public class InformaionFragment extends Fragment {
+public class VisualizationFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.information_layout, container, false);
+        View v = inflater.inflate(R.layout.visualizaion_layout, container, false);
         return v;
     }
 }
