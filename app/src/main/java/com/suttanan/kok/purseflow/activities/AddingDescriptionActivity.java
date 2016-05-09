@@ -38,7 +38,7 @@ public class AddingDescriptionActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
-            transaction = new String[5];
+            transaction = new String[6];
         } else {
             transaction = extras.getStringArray("transaction");
         }
@@ -51,7 +51,10 @@ public class AddingDescriptionActivity extends Activity {
     }
 
     private void showTransaction() {
-        Toast.makeText(this, transaction[0] + "," + transaction[1] + "," + transaction[2] + "," + transaction[3] + "," + transaction[4], Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, transaction[0] + ","
+                + transaction[1] + "," + transaction[2] + ","
+                + transaction[3] + "," + transaction[4] + ","
+                + transaction[5], Toast.LENGTH_SHORT).show();
     }
 
     private void initComponents() {
@@ -79,8 +82,8 @@ public class AddingDescriptionActivity extends Activity {
     }
 
     public void finishTransaction(View view) {
-        transaction[3] = year + "/" + month + "/" + day;
-        transaction[4] = descriptionTextField.getText().toString();
+        transaction[4] = year + "/" + month + "/" + day;
+        transaction[5] = descriptionTextField.getText().toString();
         showTransaction();
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -89,7 +92,6 @@ public class AddingDescriptionActivity extends Activity {
 
     @Override
     protected Dialog onCreateDialog(int id) {
-        // TODO Auto-generated method stub
         if (id == 999) {
             return new DatePickerDialog(this, myDateListener, year, month, day);
         }

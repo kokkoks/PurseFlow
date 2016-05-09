@@ -52,11 +52,12 @@ public class ExpensesFragment extends Fragment{
     private String value;
     private String category;
     /*
-    0 = Type (expenses or incomes)
-    1 = value
-    2 = category
-    3 = date
-    4 = description
+    0 = user
+    1 = Type (expenses or incomes)
+    2 = value
+    3 = category
+    4 = date
+    5 = description
     */
     private String[] transaction;
 
@@ -72,7 +73,7 @@ public class ExpensesFragment extends Fragment{
     }
 
     private void initComponents(){
-        transaction = new String[5];
+        transaction = new String[6];
         value = "";
         valueTextView.setText("0.0");
     }
@@ -111,9 +112,10 @@ public class ExpensesFragment extends Fragment{
     @OnClick(R.id.adding_expenses_enterBtn)
     public void EnterNextPage(Button button){
         if(category != null){
-            transaction[0] = String.valueOf(TransactionType.EXPENSES);
-            transaction[1] = value;
-            transaction[2] = category;
+            transaction[0] = "KOK";
+            transaction[1] = String.valueOf(TransactionType.EXPENSES);
+            transaction[2] = value;
+            transaction[3] = category;
             Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
             intent.putExtra("transaction", transaction);
             startActivity(intent);

@@ -81,7 +81,7 @@ public class IncomesFragment extends Fragment {
     }
 
     private void initComponents() {
-        transaction = new String[5];
+        transaction = new String[6];
         value = "";
         valueTextView.setText("0.0");
     }
@@ -118,9 +118,10 @@ public class IncomesFragment extends Fragment {
     @OnClick(R.id.adding_incomes_enterBtn)
     public void EnterNextPage(Button button) {
         if (category != null) {
-            transaction[0] = String.valueOf(TransactionType.INCOMES);
-            transaction[1] = value;
-            transaction[2] = category;
+            transaction[0] = "KOK";
+            transaction[1] = String.valueOf(TransactionType.INCOMES);
+            transaction[2] = value;
+            transaction[3] = category;
             Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
             intent.putExtra("transaction", transaction);
             startActivity(intent);
