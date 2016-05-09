@@ -22,7 +22,7 @@ import butterknife.OnClick;
 public class IncomesFragment extends Fragment {
 
 
-    @BindView(R.id.adding_incomes_value)  TextView valueTextVIew;
+    @BindView(R.id.adding_incomes_value)  TextView valueTextView;
 
     @BindView(R.id.adding_incomes_saralyBtn)  Button saralyBtn;
     @BindView(R.id.adding_incomes_bussinessBtn) Button bussinessBtn;
@@ -44,20 +44,46 @@ public class IncomesFragment extends Fragment {
     @BindView(R.id.adding_incomes_enterBtn) Button enterBtn;
     @BindView(R.id.adding_incomes_delBtn) Button delBtn;
 
+    private String value;
+    private String category;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.adding_income_layout, container, false);
         ButterKnife.bind(this, v);
+        value = "";
+        valueTextView.setText("0.0");
+
         return v;
     }
 
-//    @OnClick({ R.id.adding_incomes_saralyBtn, R.id.adding_incomes_bussinessBtn,
-//            R.id.adding_incomes_giftBtn, R.id.adding_incomes_extraBtn })
-    @OnClick(R.id.adding_incomes_giftBtn)
+    @OnClick({ R.id.adding_incomes_saralyBtn, R.id.adding_incomes_bussinessBtn,
+            R.id.adding_incomes_giftBtn, R.id.adding_incomes_extraBtn })
     public void SelectCategory(Button button) {
-        String test = button.getText().toString();
-        Toast.makeText(this.getContext(), test, Toast.LENGTH_SHORT).show();
-//        button.setText("kok");
+        String text = button.getText().toString();
+        category = text;
+        Toast.makeText(this.getContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick({R.id.adding_incomes_0Btn, R.id.adding_incomes_1Btn,
+            R.id.adding_incomes_2Btn, R.id.adding_incomes_3Btn,
+            R.id.adding_incomes_4Btn, R.id.adding_incomes_5Btn,
+            R.id.adding_incomes_6Btn, R.id.adding_incomes_7Btn,
+            R.id.adding_incomes_8Btn, R.id.adding_incomes_9Btn})
+    public void InputNumber(Button button){
+        value += button.getText().toString();
+        valueTextView.setText(value);
+        Toast.makeText(this.getContext(), value, Toast.LENGTH_LONG).show();
+    }
+
+    @OnClick(R.id.adding_incomes_delBtn)
+    public void DeleteNumber(Button button){
+        if(value.length() > 0){
+            value = value.substring(0, value.length()-1);
+            valueTextView.setText(value);
+        } else{
+            valueTextView.setText("0.0");
+        }
     }
 }

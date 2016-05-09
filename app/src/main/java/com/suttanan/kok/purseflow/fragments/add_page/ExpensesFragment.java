@@ -47,7 +47,7 @@ public class ExpensesFragment extends Fragment{
     @BindView(R.id.adding_expenses_delBtn) Button delBtn;
 
     private String value;
-
+    private String category;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -64,7 +64,8 @@ public class ExpensesFragment extends Fragment{
             R.id.adding_expenses_entertainBtn, R.id.adding_expenses_homeBtn,
             R.id.adding_expenses_healthBtn, R.id.adding_expenses_otherBtn})
     public void SelectCategory(Button button){
-        String category = button.getText().toString();
+        String text = button.getText().toString();
+        category = text;
         Toast.makeText(this.getContext(), category, Toast.LENGTH_LONG).show();
     }
 
@@ -87,6 +88,5 @@ public class ExpensesFragment extends Fragment{
         } else{
             valueTextVIew.setText("0.0");
         }
-
     }
 }
