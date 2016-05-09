@@ -84,7 +84,7 @@ public class ExpensesFragment extends Fragment{
     public void SelectCategory(Button button){
         String text = button.getText().toString();
         category = text;
-        Toast.makeText(this.getContext(), category, Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getContext(), category, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick({R.id.adding_expenses_0Btn, R.id.adding_expenses_1Btn,
@@ -95,7 +95,7 @@ public class ExpensesFragment extends Fragment{
     public void InputNumber(Button button){
         value += button.getText().toString();
         valueTextView.setText(value);
-        Toast.makeText(this.getContext(), value, Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getContext(), value, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.adding_expenses_delBtn)
@@ -110,9 +110,16 @@ public class ExpensesFragment extends Fragment{
 
     @OnClick(R.id.adding_expenses_enterBtn)
     public void EnterNextPage(Button button){
-        transaction[0] = String.valueOf(TransactionType.EXPENSES);
-        Toast.makeText(this.getContext(), transaction[0], Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
-        startActivity(intent);
+        if(category != null){
+            transaction[0] = String.valueOf(TransactionType.EXPENSES);
+            transaction[1] = value;
+            transaction[2] = category;
+            Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
+            intent.putExtra("transaction", transaction);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this.getContext(), "Please select category", Toast.LENGTH_LONG).show();
+        }
+
     }
 }
