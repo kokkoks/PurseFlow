@@ -3,6 +3,7 @@ package com.suttanan.kok.purseflow.activities;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.firebase.client.Firebase;
 import com.suttanan.kok.purseflow.R;
+import com.suttanan.kok.purseflow.others.Transaction;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,7 +51,7 @@ public class AddingDescriptionActivity extends Activity {
             transaction = extras.getStringArray("transaction");
         }
 
-        showTransaction();
+//        showTransaction();
         initComponents();
         GetDateFromCalendar();
 
@@ -93,18 +95,18 @@ public class AddingDescriptionActivity extends Activity {
     public void finishTransaction(View view) throws ParseException {
         transaction[1] = year + "/" + month + "/" + day;
         transaction[5] = descriptionTextField.getText().toString();
-//        showTransaction();
+        showTransaction();
 
         Date date = new Date(year, month,day);
-        Toast.makeText(this, date.getMonth()+"" , Toast.LENGTH_SHORT).show();
-//        Firebase test = ref.child("users").child("kok");
-//        Transaction tran = new Transaction("kok", date, transaction[2],
-//                Integer.parseInt(transaction[3]), transaction[4], transaction[5]);
-//        test.push().setValue(tran);
 
-//        Intent intent = new Intent(this, MainActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        startActivity(intent);
+        Firebase test = ref.child("users").child("kok");
+        Transaction tran = new Transaction("kok", date, transaction[2],
+                Integer.parseInt(transaction[3]), transaction[4], transaction[5]);
+        test.push().setValue(tran);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     @Override
