@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.activities.AddingDescriptionActivity;
+import com.suttanan.kok.purseflow.others.TransactionType;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,44 +25,69 @@ import butterknife.OnClick;
 public class IncomesFragment extends Fragment {
 
 
-    @BindView(R.id.adding_incomes_value)  TextView valueTextView;
+    @BindView(R.id.adding_incomes_value)
+    TextView valueTextView;
 
-    @BindView(R.id.adding_incomes_salaryBtn)  Button salaryBtn;
-    @BindView(R.id.adding_incomes_bussinessBtn) Button bussinessBtn;
-    @BindView(R.id.adding_incomes_giftBtn) Button giftBtn;
-    @BindView(R.id.adding_incomes_extraBtn) Button extraBtn;
+    @BindView(R.id.adding_incomes_salaryBtn)
+    Button salaryBtn;
+    @BindView(R.id.adding_incomes_bussinessBtn)
+    Button bussinessBtn;
+    @BindView(R.id.adding_incomes_giftBtn)
+    Button giftBtn;
+    @BindView(R.id.adding_incomes_extraBtn)
+    Button extraBtn;
 
-    @BindView(R.id.adding_incomes_0Btn) Button num0Btn;
-    @BindView(R.id.adding_incomes_1Btn) Button num1Btn;
-    @BindView(R.id.adding_incomes_2Btn) Button num2Btn;
-    @BindView(R.id.adding_incomes_3Btn) Button num3Btn;
-    @BindView(R.id.adding_incomes_4Btn) Button num4Btn;
-    @BindView(R.id.adding_incomes_5Btn) Button num5Btn;
-    @BindView(R.id.adding_incomes_6Btn) Button num6Btn;
-    @BindView(R.id.adding_incomes_7Btn) Button num7Btn;
-    @BindView(R.id.adding_incomes_8Btn) Button num8Btn;
-    @BindView(R.id.adding_incomes_9Btn) Button num9Btn;
+    @BindView(R.id.adding_incomes_0Btn)
+    Button num0Btn;
+    @BindView(R.id.adding_incomes_1Btn)
+    Button num1Btn;
+    @BindView(R.id.adding_incomes_2Btn)
+    Button num2Btn;
+    @BindView(R.id.adding_incomes_3Btn)
+    Button num3Btn;
+    @BindView(R.id.adding_incomes_4Btn)
+    Button num4Btn;
+    @BindView(R.id.adding_incomes_5Btn)
+    Button num5Btn;
+    @BindView(R.id.adding_incomes_6Btn)
+    Button num6Btn;
+    @BindView(R.id.adding_incomes_7Btn)
+    Button num7Btn;
+    @BindView(R.id.adding_incomes_8Btn)
+    Button num8Btn;
+    @BindView(R.id.adding_incomes_9Btn)
+    Button num9Btn;
 
-    @BindView(R.id.adding_incomes_dotBtn) Button dotBtn;
-    @BindView(R.id.adding_incomes_enterBtn) Button enterBtn;
-    @BindView(R.id.adding_incomes_delBtn) Button delBtn;
+    @BindView(R.id.adding_incomes_dotBtn)
+    Button dotBtn;
+    @BindView(R.id.adding_incomes_enterBtn)
+    Button enterBtn;
+    @BindView(R.id.adding_incomes_delBtn)
+    Button delBtn;
 
     private String value;
     private String category;
+    private String[] transaction;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.adding_income_layout, container, false);
         ButterKnife.bind(this, v);
-        value = "";
-        valueTextView.setText("0.0");
+
+        initComponents();
 
         return v;
     }
 
-    @OnClick({ R.id.adding_incomes_salaryBtn, R.id.adding_incomes_bussinessBtn,
-            R.id.adding_incomes_giftBtn, R.id.adding_incomes_extraBtn })
+    private void initComponents() {
+        transaction = new String[6];
+        value = "";
+        valueTextView.setText("0.0");
+    }
+
+    @OnClick({R.id.adding_incomes_salaryBtn, R.id.adding_incomes_bussinessBtn,
+            R.id.adding_incomes_giftBtn, R.id.adding_incomes_extraBtn})
     public void SelectCategory(Button button) {
         String text = button.getText().toString();
         category = text;
@@ -73,25 +99,37 @@ public class IncomesFragment extends Fragment {
             R.id.adding_incomes_4Btn, R.id.adding_incomes_5Btn,
             R.id.adding_incomes_6Btn, R.id.adding_incomes_7Btn,
             R.id.adding_incomes_8Btn, R.id.adding_incomes_9Btn})
-    public void InputNumber(Button button){
+    public void InputNumber(Button button) {
         value += button.getText().toString();
         valueTextView.setText(value);
-        Toast.makeText(this.getContext(), value, Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getContext(), value, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.adding_incomes_delBtn)
-    public void DeleteNumber(Button button){
-        if(value.length() > 0){
-            value = value.substring(0, value.length()-1);
+    public void DeleteNumber(Button button) {
+        if (value.length() > 0) {
+            value = value.substring(0, value.length() - 1);
             valueTextView.setText(value);
-        } else{
+        } else {
             valueTextView.setText("0.0");
         }
     }
 
     @OnClick(R.id.adding_incomes_enterBtn)
-    public void EnterNextPage(Button button){
-        Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
-        startActivity(intent);
+    public void EnterNextPage(Button button) {
+        if (category != null) {
+            if(value.equals("")) {
+                value = "0";
+            }
+            transaction[0] = "KOK";
+            transaction[2] = String.valueOf(TransactionType.EXPENSES);
+            transaction[3] = value;
+            transaction[4] = category;
+            Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
+            intent.putExtra("transaction", transaction);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this.getContext(), "Please select category", Toast.LENGTH_LONG).show();
+        }
     }
 }

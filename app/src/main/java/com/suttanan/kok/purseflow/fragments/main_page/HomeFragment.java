@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.firebase.client.Firebase;
 import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.activities.AddingActivity;
 import com.suttanan.kok.purseflow.activities.LoginActivity;
@@ -19,8 +20,9 @@ import com.suttanan.kok.purseflow.activities.LoginActivity;
  */
 public class HomeFragment extends Fragment {
 
-    TextView userNameTxt;
-    Button currencyBtn;
+    private TextView userNameTxt;
+    private Button currencyBtn;
+    Firebase myFireBaseRef;
 
     @Nullable
     @Override

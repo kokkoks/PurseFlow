@@ -52,11 +52,12 @@ public class ExpensesFragment extends Fragment{
     private String value;
     private String category;
     /*
-    0 = Type (expenses or incomes)
-    1 = value
-    2 = category
-    3 = date
-    4 = description
+    0 = user
+    1 = date
+    2 = Type (expenses or incomes)
+    3 = value
+    4 = category
+    5 = description
     */
     private String[] transaction;
 
@@ -72,7 +73,7 @@ public class ExpensesFragment extends Fragment{
     }
 
     private void initComponents(){
-        transaction = new String[5];
+        transaction = new String[6];
         value = "";
         valueTextView.setText("0.0");
     }
@@ -84,7 +85,7 @@ public class ExpensesFragment extends Fragment{
     public void SelectCategory(Button button){
         String text = button.getText().toString();
         category = text;
-        Toast.makeText(this.getContext(), category, Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getContext(), category, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick({R.id.adding_expenses_0Btn, R.id.adding_expenses_1Btn,
@@ -95,7 +96,7 @@ public class ExpensesFragment extends Fragment{
     public void InputNumber(Button button){
         value += button.getText().toString();
         valueTextView.setText(value);
-        Toast.makeText(this.getContext(), value, Toast.LENGTH_LONG).show();
+//        Toast.makeText(this.getContext(), value, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.adding_expenses_delBtn)
@@ -110,9 +111,20 @@ public class ExpensesFragment extends Fragment{
 
     @OnClick(R.id.adding_expenses_enterBtn)
     public void EnterNextPage(Button button){
-        transaction[0] = String.valueOf(TransactionType.EXPENSES);
-        Toast.makeText(this.getContext(), transaction[0], Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
-        startActivity(intent);
+        if(category != null){
+            if(value.equals("")){
+                value = "0";
+            }
+            transaction[0] = "KOK";
+            transaction[2] = String.valueOf(TransactionType.EXPENSES);
+            transaction[3] = value;
+            transaction[4] = category;
+            Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
+            intent.putExtra("transaction", transaction);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this.getContext(), "Please select category", Toast.LENGTH_LONG).show();
+        }
+
     }
 }
