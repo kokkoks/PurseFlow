@@ -118,10 +118,13 @@ public class IncomesFragment extends Fragment {
     @OnClick(R.id.adding_incomes_enterBtn)
     public void EnterNextPage(Button button) {
         if (category != null) {
+            if(value.equals("")) {
+                value = "0";
+            }
             transaction[0] = "KOK";
-            transaction[1] = String.valueOf(TransactionType.INCOMES);
-            transaction[2] = value;
-            transaction[3] = category;
+            transaction[2] = String.valueOf(TransactionType.EXPENSES);
+            transaction[3] = value;
+            transaction[4] = category;
             Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
             intent.putExtra("transaction", transaction);
             startActivity(intent);

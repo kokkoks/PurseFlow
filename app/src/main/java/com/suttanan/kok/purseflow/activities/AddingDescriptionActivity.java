@@ -3,7 +3,6 @@ package com.suttanan.kok.purseflow.activities;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
@@ -11,9 +10,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.suttanan.kok.purseflow.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by KOKKOK on 5/10/2016.
@@ -24,17 +27,20 @@ public class AddingDescriptionActivity extends Activity {
     private Calendar calendar;
     private TextView dateView;
     private int year, month, day;
+    SimpleDateFormat dateFormat;
 
     private TextView valueTextView;
     private EditText descriptionTextField;
     private String value;
 
     private String[] transaction;
+    Firebase ref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.adding_description_layout);
+        Firebase.setAndroidContext(this);
 
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
@@ -61,6 +67,9 @@ public class AddingDescriptionActivity extends Activity {
         valueTextView = (TextView) findViewById(R.id.adding_description_value);
         dateView = (TextView) findViewById(R.id.test_timepicker);
         descriptionTextField = (EditText) findViewById(R.id.adding_description_textField);
+
+        dateFormat = new SimpleDateFormat("yyyy/MM/dd");;
+        ref = new Firebase("https://purseflow.firebaseio.com/");
     }
 
     private void GetDateFromCalendar() {
@@ -81,13 +90,21 @@ public class AddingDescriptionActivity extends Activity {
         showDialog(999);
     }
 
-    public void finishTransaction(View view) {
-        transaction[4] = year + "/" + month + "/" + day;
+    public void finishTransaction(View view) throws ParseException {
+        transaction[1] = year + "/" + month + "/" + day;
         transaction[5] = descriptionTextField.getText().toString();
-        showTransaction();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+//        showTransaction();
+
+        Date date = new Date(year, month,day);
+        Toast.makeText(this, date.getMonth()+"" , Toast.LENGTH_SHORT).show();
+//        Firebase test = ref.child("users").child("kok");
+//        Transaction tran = new Transaction("kok", date, transaction[2],
+//                Integer.parseInt(transaction[3]), transaction[4], transaction[5]);
+//        test.push().setValue(tran);
+
+//        Intent intent = new Intent(this, MainActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        startActivity(intent);
     }
 
     @Override
@@ -104,7 +121,14 @@ public class AddingDescriptionActivity extends Activity {
             // arg1 = year
             // arg2 = month
             // arg3 = day
+            setDateTime(arg1, arg2, arg3);
             showDate(arg1, arg2 + 1, arg3);
         }
     };
+
+    private void setDateTime(int year, int month, int day) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+    }
 }
