@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.facebook.Profile;
 import com.firebase.client.Firebase;
 import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.activities.AddingActivity;
@@ -48,5 +49,14 @@ public class HomeFragment extends Fragment {
             }
         });
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String userName = "User Name : ";
+        Profile profile = Profile.getCurrentProfile();
+        userName += profile.getFirstName() + " " + profile.getLastName();
+        userNameTxt.setText(userName);
     }
 }
