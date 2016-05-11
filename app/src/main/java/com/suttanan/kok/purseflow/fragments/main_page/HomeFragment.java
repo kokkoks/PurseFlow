@@ -54,9 +54,17 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        ShowUserName();
+    }
+
+    private void ShowUserName() {
         String userName = "User Name : ";
-        Profile profile = Profile.getCurrentProfile();
-        userName += profile.getFirstName() + " " + profile.getLastName();
+        if(Profile.getCurrentProfile() != null) {
+            Profile profile = Profile.getCurrentProfile();
+            userName += profile.getFirstName() + " " + profile.getLastName() ;
+        } else {
+            userName = "Unautherize";
+        }
         userNameTxt.setText(userName);
     }
 }
