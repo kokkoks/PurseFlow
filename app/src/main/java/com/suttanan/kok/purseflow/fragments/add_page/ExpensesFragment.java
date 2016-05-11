@@ -73,7 +73,7 @@ public class ExpensesFragment extends Fragment{
     }
 
     private void initComponents(){
-        transaction = new String[6];
+        transaction = new String[5];
         value = "";
         valueTextView.setText("0.0");
     }
@@ -115,10 +115,9 @@ public class ExpensesFragment extends Fragment{
             if(value.equals("")){
                 value = "0";
             }
-            transaction[0] = "KOK";
-            transaction[2] = String.valueOf(TransactionType.EXPENSES);
-            transaction[3] = value;
-            transaction[4] = category;
+            transaction[1] = String.valueOf(TransactionType.EXPENSES);
+            transaction[2] = value;
+            transaction[3] = category;
             Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
             intent.putExtra("transaction", transaction);
             startActivity(intent);

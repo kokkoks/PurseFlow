@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.Profile;
 import com.firebase.client.Firebase;
 import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.others.Transaction;
@@ -36,7 +37,8 @@ public class AddingDescriptionActivity extends Activity {
     private String value;
 
     private String[] transaction;
-    Firebase ref;
+    private Firebase ref;
+    private Profile profile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class AddingDescriptionActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
-            transaction = new String[6];
+            transaction = new String[5];
         } else {
             transaction = extras.getStringArray("transaction");
         }
@@ -61,8 +63,7 @@ public class AddingDescriptionActivity extends Activity {
     private void showTransaction() {
         Toast.makeText(this, transaction[0] + ","
                 + transaction[1] + "," + transaction[2] + ","
-                + transaction[3] + "," + transaction[4] + ","
-                + transaction[5], Toast.LENGTH_SHORT).show();
+                + transaction[3] + "," + transaction[4], Toast.LENGTH_SHORT).show();
     }
 
     private void initComponents() {
@@ -70,8 +71,8 @@ public class AddingDescriptionActivity extends Activity {
         dateView = (TextView) findViewById(R.id.test_timepicker);
         descriptionTextField = (EditText) findViewById(R.id.adding_description_textField);
 
-        dateFormat = new SimpleDateFormat("yyyy/MM/dd");;
         ref = new Firebase("https://purseflow.firebaseio.com/");
+
     }
 
     private void GetDateFromCalendar() {
@@ -93,20 +94,32 @@ public class AddingDescriptionActivity extends Activity {
     }
 
     public void finishTransaction(View view) throws ParseException {
-        transaction[1] = year + "/" + month + "/" + day;
-        transaction[5] = descriptionTextField.getText().toString();
+        Date date = new Date(year, month, day);
+        Firebase ref = new Firebase("https://purseflow.firebaseio.com/");
+        transaction[0] = year + "-" + (month + 1) + "-" + day;
+        transaction[4] = descriptionTextField.getText().toString();
         showTransaction();
 
-        Date date = new Date(year, month,day);
-
-        Firebase test = ref.child("users").child("kok");
-        Transaction tran = new Transaction("kok", date, transaction[2],
-                Integer.parseInt(transaction[3]), transaction[4], transaction[5]);
-        test.push().setValue(tran);
+        Firebase fireRef = CreateFirebaseRef(ref);
+        Transaction tran = new Transaction(date, transaction[1],
+                Integer.parseInt(transaction[2]), transaction[3], transaction[4]);
+        fireRef.push().setValue(tran);
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    private Firebase CreateFirebaseRef(Firebase ref){
+        Firebase fireRef;
+        profile = Profile.getCurrentProfile();
+        if(profile != null){
+            Profile profile = Profile.getCurrentProfile();
+            fireRef = ref.child("users").child(profile.getId()).child(transaction[0]);
+        } else {
+            fireRef = ref.child("users").child("Unautherize").child(transaction[0]);
+        }
+        return fireRef;
     }
 
     @Override
