@@ -17,7 +17,7 @@ public class InformationRowAdapter extends BaseAdapter {
     String[] names;
     int[] resId;
 
-    public InformationRowAdapter(Context context, String[] test) {
+    public InformationRowAdapter(Context mContext, String[] names) {
         this.mContext = mContext;
         this.names = names;
     }
