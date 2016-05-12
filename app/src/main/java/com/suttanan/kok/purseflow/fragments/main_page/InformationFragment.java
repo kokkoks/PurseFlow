@@ -23,6 +23,7 @@ import com.suttanan.kok.purseflow.others.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 /**
  * Created by K.K.K on 4/30/2016.
@@ -45,6 +46,7 @@ public class InformationFragment extends Fragment {
         context = container.getContext();
         Firebase.setAndroidContext(v.getContext());
 
+
         datas = new ArrayList<ArrayList<Transaction>>();
         dateStrings = new ArrayList<String>();
 
@@ -53,12 +55,13 @@ public class InformationFragment extends Fragment {
         myFirebaseRef = ref.child("users").child(user);
         Query keyRef = myFirebaseRef.orderByKey();
 
+        listView = (ListView) v.findViewById(R.id.listView);
         test_text = (TextView) v.findViewById(R.id.test_text_info);
 
         keyRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                Toast.makeText(getContext(), dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), dataSnapshot.getKey() + " test", Toast.LENGTH_SHORT).show();
 //                String text = dataSnapshot.getKey();
                 dateStrings.add(dataSnapshot.getKey());
                 Firebase childRef = myFirebaseRef.child(dataSnapshot.getKey());
@@ -68,63 +71,47 @@ public class InformationFragment extends Fragment {
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                             Transaction tran = dataSnapshot.getValue(Transaction.class);
 //                            Toast.makeText(getContext(), tran.getCategory(), Toast.LENGTH_SHORT).show();
+                        CreateListview();
                     }
 
                     @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
 
                     @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
+                    public void onChildRemoved(DataSnapshot dataSnapshot) { }
 
                     @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
 
                     @Override
-                    public void onCancelled(FirebaseError firebaseError) {
-
-                    }
+                    public void onCancelled(FirebaseError firebaseError) { }
                 });
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
+            public void onChildRemoved(DataSnapshot dataSnapshot) { }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
+            public void onCancelled(FirebaseError firebaseError) { }
         });
 
-        Toast.makeText(v.getContext(), dateStrings.size()+"", Toast.LENGTH_SHORT).show();
-        String[] keys = new String[dateStrings.size()];
-        keys = dateStrings.toArray(keys);
 //        String[] keys = {"kok", "kak", "kook", "kai"};
-//        Toast.makeText(v.getContext(), keys[0], Toast.LENGTH_SHORT).show();
+//        Toast.makeText(v.getContext(), keys.length+" testnaja", Toast.LENGTH_SHORT).show();
         int[] testInt = {0,1,2,3,4,};
 
-        InformationRowAdapter informationRowAdapter = new InformationRowAdapter(context, keys, testInt);
 
-        listView = (ListView) v.findViewById(R.id.listView);
-
-        listView.setAdapter(informationRowAdapter);
+        test_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), dateStrings.size()+"", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return v;
     }
@@ -135,5 +122,14 @@ public class InformationFragment extends Fragment {
             return profile.getId();
         }
         return unautherizeUser;
+    }
+
+    private void CreateListview(){
+
+        String[] keys = new String[dateStrings.size()];
+        keys = dateStrings.toArray(keys);
+        InformationRowAdapter informationRowAdapter = new InformationRowAdapter(context, keys);
+
+        listView.setAdapter(informationRowAdapter);
     }
 }
