@@ -29,7 +29,7 @@ import java.util.List;
  */
 public class InformationFragment extends Fragment {
 
-    private String unautherizeUser = "Unautherize";
+    final private String unautherizeUser = "Unautherize";
     private ListView listView;
     private TextView test_text;
     private Context context;
@@ -59,15 +59,15 @@ public class InformationFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 //                Toast.makeText(getContext(), dataSnapshot.getKey(), Toast.LENGTH_SHORT).show();
-                String text = dataSnapshot.getKey();
-                dateStrings.add(text);
+//                String text = dataSnapshot.getKey();
+                dateStrings.add(dataSnapshot.getKey());
                 Firebase childRef = myFirebaseRef.child(dataSnapshot.getKey());
                 Query queryChildRef = childRef.orderByKey();
                 queryChildRef.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                             Transaction tran = dataSnapshot.getValue(Transaction.class);
-                            Toast.makeText(getContext(), tran.getCategory(), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getContext(), tran.getCategory(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -113,7 +113,7 @@ public class InformationFragment extends Fragment {
             }
         });
 
-//        Toast.makeText(v.getContext(), "", Toast.LENGTH_SHORT).show();
+        Toast.makeText(v.getContext(), dateStrings.size()+"", Toast.LENGTH_SHORT).show();
         String[] keys = new String[dateStrings.size()];
         keys = dateStrings.toArray(keys);
 //        String[] keys = {"kok", "kak", "kook", "kai"};
