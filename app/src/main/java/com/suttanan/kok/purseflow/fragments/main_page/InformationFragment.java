@@ -24,6 +24,7 @@ import com.suttanan.kok.purseflow.adapters.InformationRowAdapter;
 import com.suttanan.kok.purseflow.others.Transaction;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -140,11 +141,17 @@ public class InformationFragment extends Fragment{
     }
 
     private void CreateListview(){
-
         String[] keys = new String[dateStrings.size()];
         keys = dateStrings.toArray(keys);
-//        InformationRowAdapter informationRowAdapter = new InformationRowAdapter(context, keys);
-        listView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.information_row,R.id.information_textView, keys) );
-//        listView.setAdapter(informationRowAdapter);
+        Arrays.sort(keys);
+        int[] resId = new int[keys.length];
+
+        for(int i = 0; i < keys.length; i++){
+            resId[i] = i;
+        }
+
+        InformationRowAdapter informationRowAdapter = new InformationRowAdapter(context, keys, resId);
+//        listView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.information_row,R.id.information_textView, keys) );
+        listView.setAdapter(informationRowAdapter);
     }
 }
