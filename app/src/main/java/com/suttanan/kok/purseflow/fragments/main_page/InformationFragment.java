@@ -1,5 +1,6 @@
 package com.suttanan.kok.purseflow.fragments.main_page;
 
+import android.app.ListActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,13 +24,14 @@ import com.suttanan.kok.purseflow.adapters.InformationRowAdapter;
 import com.suttanan.kok.purseflow.others.Transaction;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
 /**
  * Created by K.K.K on 4/30/2016.
  */
-public class InformationFragment extends Fragment {
+public class InformationFragment extends Fragment{
 
     final private String unautherizeUser = "Unautherize";
     private ListView listView;
@@ -36,6 +39,10 @@ public class InformationFragment extends Fragment {
     private Context context;
     private List<ArrayList<Transaction>> datas;
     private List<String> dateStrings;
+
+    private ArrayList<Transaction> transaction;
+    private String dateFirebaeKey;
+    private HashMap<String, ArrayList> hashdatas;
     Firebase ref;
     Firebase myFirebaseRef;
 
@@ -46,7 +53,7 @@ public class InformationFragment extends Fragment {
         context = container.getContext();
         Firebase.setAndroidContext(v.getContext());
 
-
+        hashdatas = new HashMap<String, ArrayList>();
         datas = new ArrayList<ArrayList<Transaction>>();
         dateStrings = new ArrayList<String>();
 
@@ -61,16 +68,24 @@ public class InformationFragment extends Fragment {
         keyRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-//                Toast.makeText(getContext(), dataSnapshot.getKey() + " test", Toast.LENGTH_SHORT).show();
-//                String text = dataSnapshot.getKey();
                 dateStrings.add(dataSnapshot.getKey());
+                dateFirebaeKey = dataSnapshot.getKey();
+
                 Firebase childRef = myFirebaseRef.child(dataSnapshot.getKey());
                 Query queryChildRef = childRef.orderByKey();
+
                 queryChildRef.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                            Transaction tran = dataSnapshot.getValue(Transaction.class);
-//                            Toast.makeText(getContext(), tran.getCategory(), Toast.LENGTH_SHORT).show();
+                        Transaction tran = dataSnapshot.getValue(Transaction.class);
+
+                        if(hashdatas.containsKey(dateFirebaeKey)){
+                            hashdatas.get(dateFirebaeKey).add(tran);
+                        } else {
+                            ArrayList<Transaction> transaction = new ArrayList<Transaction>();
+                            transaction.add(tran);
+                            hashdatas.put(dateFirebaeKey, transaction);
+                        }
                         CreateListview();
                     }
 
@@ -128,8 +143,8 @@ public class InformationFragment extends Fragment {
 
         String[] keys = new String[dateStrings.size()];
         keys = dateStrings.toArray(keys);
-        InformationRowAdapter informationRowAdapter = new InformationRowAdapter(context, keys);
-
-        listView.setAdapter(informationRowAdapter);
+//        InformationRowAdapter informationRowAdapter = new InformationRowAdapter(context, keys);
+        listView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.information_row,R.id.information_textView, keys) );
+//        listView.setAdapter(informationRowAdapter);
     }
 }
