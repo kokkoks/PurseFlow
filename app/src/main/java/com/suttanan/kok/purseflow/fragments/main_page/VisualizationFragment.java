@@ -59,7 +59,7 @@ public class VisualizationFragment extends Fragment implements AdapterView.OnIte
     private Firebase ref;
     private Firebase myFirebaseRef;
 
-    private List<Transaction>[] dateTransaction;
+    private ArrayList<Transaction>[] dateTransaction;
     private List<String> dateStrings;
 
     //    @BindView(R.id.visual_dateTextView) TextView dateText;
@@ -82,7 +82,7 @@ public class VisualizationFragment extends Fragment implements AdapterView.OnIte
 
         initComponents();
         getDataFromFirebase();
-        createGrahpView();
+//        createGrahpView();
 
         return v;
     }
@@ -110,6 +110,7 @@ public class VisualizationFragment extends Fragment implements AdapterView.OnIte
                         Transaction tran = dataSnapshot.getValue(Transaction.class);
                         hashdatas.get(dateSnapshot.getKey()).add(tran);
                         dateTransaction = filterQueryData();
+                        createGrahpView();
 //                        Toast.makeText(getContext(), tran.getCategory(), Toast.LENGTH_SHORT).show();
                     }
 
@@ -197,7 +198,7 @@ public class VisualizationFragment extends Fragment implements AdapterView.OnIte
             int thisMonth = Integer.parseInt(date[1]);
             int thisDay = Integer.parseInt(date[2]);
             if((month+1) == thisMonth){
-                arrayLists[thisDay] = hashdatas.get(dateStrings.get(i));
+                arrayLists[thisDay-1] = hashdatas.get(dateStrings.get(i));
             }
         }
 
@@ -224,6 +225,8 @@ public class VisualizationFragment extends Fragment implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         month = position;
+
+        getDataFromFirebase();
     }
 
     @Override
@@ -232,14 +235,28 @@ public class VisualizationFragment extends Fragment implements AdapterView.OnIte
     }
 
     private void createGrahpView(){
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
-        });
-        graph.addSeries(series);
+        graph.removeAllSeries();
+        if(dateTransaction != null) {
+            DataPoint[] dataPoints = new DataPoint[dateTransaction.length];
+            for (int i = 0; i < dataPoints.length; i++) {
+                ArrayList<Transaction> transactions = dateTransaction[i];
+
+                if (transactions == null) {
+                    dataPoints[i] = new DataPoint(i, 0);
+                } else {
+                    int sum = 0;
+                    for (int j = 0; j < transactions.size(); j++) {
+                        if (transactions.get(j).getType().equals(String.valueOf(TransactionType.EXPENSES))) {
+//                            Toast.makeText(this.getContext(), sum + "", Toast.LENGTH_SHORT).show();
+                            sum += transactions.get(j).getValue();
+                        }
+                    }
+                    dataPoints[i] = new DataPoint(i, sum);
+                }
+            }
+            LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints);
+            graph.addSeries(series);
+        }
     }
 
     @OnClick(R.id.button)
