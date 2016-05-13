@@ -51,8 +51,9 @@ import butterknife.OnClick;
 /**
  * Created by K.K.K on 4/30/2016.
  */
-public class VisualizationFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class VisualizationFragment extends Fragment {
     final private String unautherizeUser = "Unautherize";
+
     private Context context;
 
     private HashMap<String, ArrayList<Transaction>> hashdatas;
@@ -63,13 +64,13 @@ public class VisualizationFragment extends Fragment implements AdapterView.OnIte
     private List<String> dateStrings;
 
     //    @BindView(R.id.visual_dateTextView) TextView dateText;
-    @BindView(R.id.visual_graphView)
-    GraphView graph;
-    @BindView(R.id.visual_monthSpinner)
-    Spinner monthSpinner;
+    @BindView(R.id.visual_graphView) GraphView graph;
+    @BindView(R.id.visual_categorySpinner) Spinner categorySpinner;
+    @BindView(R.id.visual_monthSpinner) Spinner monthSpinner;
+
     private Calendar calendar;
     private int year, month, day;
-
+    private String category;
 
 
     @Nullable
@@ -110,7 +111,11 @@ public class VisualizationFragment extends Fragment implements AdapterView.OnIte
                         Transaction tran = dataSnapshot.getValue(Transaction.class);
                         hashdatas.get(dateSnapshot.getKey()).add(tran);
                         dateTransaction = filterQueryData();
-                        createGrahpView();
+                        if(category.equals("Total")) {
+                            createGrahpView();
+                        } else {
+                            createCategoryGrahpView();
+                        }
 //                        Toast.makeText(getContext(), tran.getCategory(), Toast.LENGTH_SHORT).show();
                     }
 
@@ -154,6 +159,7 @@ public class VisualizationFragment extends Fragment implements AdapterView.OnIte
     private void initComponents() {
         getDateFromCalendar();
         setMonthSpinner();
+        setCategorySpinner();
 //        showDate(year, month + 1, day);
         dateStrings = new ArrayList<String>();
         hashdatas = new HashMap<String, ArrayList<Transaction>>();
@@ -214,24 +220,46 @@ public class VisualizationFragment extends Fragment implements AdapterView.OnIte
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         monthSpinner.setAdapter(adapter);
         monthSpinner.setSelection(month);
-        monthSpinner.setOnItemSelectedListener(this);
+//        monthSpinner.setOnItemSelectedListener(context);
+        monthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                month = position;
+                getDataFromFirebase();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private void setCategorySpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(), R.array.category_name, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        categorySpinner.setAdapter(adapter);
+//        categorySpinner.setOnItemSelectedListener(this);
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String[] categorys = getResources().getStringArray(R.array.category_name);
+                category = categorys[position];
+                getDataFromFirebase();
+//                Toast.makeText(getContext(), category, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
     private void setDateTime(int year, int month) {
         this.year = year;
         this.month = month;
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        month = position;
-
-        getDataFromFirebase();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
     }
 
     private void createGrahpView(){
@@ -247,7 +275,6 @@ public class VisualizationFragment extends Fragment implements AdapterView.OnIte
                     int sum = 0;
                     for (int j = 0; j < transactions.size(); j++) {
                         if (transactions.get(j).getType().equals(String.valueOf(TransactionType.EXPENSES))) {
-//                            Toast.makeText(this.getContext(), sum + "", Toast.LENGTH_SHORT).show();
                             sum += transactions.get(j).getValue();
                         }
                     }
@@ -257,6 +284,36 @@ public class VisualizationFragment extends Fragment implements AdapterView.OnIte
             LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints);
             graph.addSeries(series);
         }
+    }
+
+    private void createCategoryGrahpView(){
+        graph.removeAllSeries();
+        if(dateTransaction != null) {
+            DataPoint[] dataPoints = new DataPoint[dateTransaction.length];
+            for (int i = 0; i < dataPoints.length; i++) {
+                ArrayList<Transaction> transactions = dateTransaction[i];
+
+                if (transactions == null) {
+                    dataPoints[i] = new DataPoint(i, 0);
+                } else {
+                    int sum = 0;
+                    for (int j = 0; j < transactions.size(); j++) {
+                        if (checkCategoryAndDate(transactions.get(j))) {
+                            sum += transactions.get(j).getValue();
+                        }
+                    }
+                    dataPoints[i] = new DataPoint(i, sum);
+                }
+            }
+            LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints);
+            graph.addSeries(series);
+        }
+    }
+
+    private boolean checkCategoryAndDate(Transaction tran){
+        boolean checkDate = tran.getType().equals(String.valueOf(TransactionType.EXPENSES ));
+        boolean checkCategory = tran.getCategory().equalsIgnoreCase(category);
+        return checkCategory && checkDate;
     }
 
     @OnClick(R.id.button)
@@ -269,12 +326,6 @@ public class VisualizationFragment extends Fragment implements AdapterView.OnIte
                 test += "1-";
             }
         }
-
-//        for(int i = 0; i < dateStrings.size(); i++){
-//            test += dateStrings.get(i) + "-";
-//        }
-
         Toast.makeText(this.getContext(), test, Toast.LENGTH_SHORT).show();
     }
-
 }

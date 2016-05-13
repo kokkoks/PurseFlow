@@ -82,7 +82,7 @@ public class ExpensesFragment extends Fragment{
             R.id.adding_expenses_familyBtn, R.id.adding_expenses_travelBtn,
             R.id.adding_expenses_entertainBtn, R.id.adding_expenses_homeBtn,
             R.id.adding_expenses_healthBtn, R.id.adding_expenses_otherBtn})
-    public void SelectCategory(Button button){
+    public void selectCategory(Button button){
         String text = button.getText().toString();
         category = text;
         Toast.makeText(this.getContext(), category, Toast.LENGTH_SHORT).show();
@@ -93,14 +93,14 @@ public class ExpensesFragment extends Fragment{
             R.id.adding_expenses_4Btn, R.id.adding_expenses_5Btn,
             R.id.adding_expenses_6Btn, R.id.adding_expenses_7Btn,
             R.id.adding_expenses_8Btn, R.id.adding_expenses_9Btn})
-    public void InputNumber(Button button){
+    public void inputNumber(Button button){
         value += button.getText().toString();
         valueTextView.setText(value);
 //        Toast.makeText(this.getContext(), value, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.adding_expenses_delBtn)
-    public void DeleteNumber(Button button){
+    public void deleteNumber(Button button){
         if(value.length() > 0){
             value = value.substring(0, value.length()-1);
             valueTextView.setText(value);
@@ -110,7 +110,7 @@ public class ExpensesFragment extends Fragment{
     }
 
     @OnClick(R.id.adding_expenses_enterBtn)
-    public void EnterNextPage(Button button){
+    public void enterNextPage(Button button){
         if(category != null){
             if(value.equals("")){
                 value = "0";

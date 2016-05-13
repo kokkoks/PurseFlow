@@ -43,14 +43,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Food"/>
+                android:text="food"/>
 
             <Button
                 android:id="@+id/adding_expenses_shopBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Shop"/>
+                android:text="shop"/>
 
             <Button
                 android:id="@+id/adding_expenses_travelBtn"
@@ -78,28 +78,28 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Entertain"/>
+                android:text="entertain"/>
 
             <Button
                 android:id="@+id/adding_expenses_homeBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Home"/>
+                android:text="home"/>
 
             <Button
                 android:id="@+id/adding_expenses_healthBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Health"/>
+                android:text="health"/>
 
             <Button
                 android:id="@+id/adding_expenses_otherBtn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Other"/>
+                android:text="other"/>
 
         </LinearLayout>
 

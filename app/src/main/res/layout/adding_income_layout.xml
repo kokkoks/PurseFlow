@@ -44,21 +44,21 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Business"/>
+            android:text="business"/>
 
         <Button
             android:id="@+id/adding_incomes_giftBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Gift"/>
+            android:text="gift"/>
 
         <Button
             android:id="@+id/adding_incomes_extraBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Extra"/>
+            android:text="extra"/>
 
     </LinearLayout>
 

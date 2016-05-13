@@ -9,12 +9,25 @@
         android:text="Visual"
         android:id="@+id/visual_textView" />
 
-    <Spinner
-        android:id="@+id/visual_monthSpinner"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    </Spinner>
+        <Spinner
+            android:id="@+id/visual_categorySpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </Spinner>
+
+        <Spinner
+            android:id="@+id/visual_monthSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </Spinner>
+    </LinearLayout>
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/visual_graphView"
