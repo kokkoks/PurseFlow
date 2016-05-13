@@ -85,6 +85,7 @@ public class InformationFragment extends Fragment {
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Transaction tran = dataSnapshot.getValue(Transaction.class);
                         hashdatas.get(dateSnapshot.getKey()).add(tran);
+                        CreateListview();
                     }
 
                     @Override
@@ -104,7 +105,7 @@ public class InformationFragment extends Fragment {
                     }
                 });
 
-                CreateListview();
+//                CreateListview();
             }
 
             @Override
@@ -163,5 +164,6 @@ public class InformationFragment extends Fragment {
         InformationRowAdapter informationRowAdapter = new InformationRowAdapter(context, keys, hashdatas, resId);
 //        listView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.information_row,R.id.information_textView, keys) );
         listView.setAdapter(informationRowAdapter);
+        informationRowAdapter.notifyDataSetChanged();
     }
 }
