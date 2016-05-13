@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.adapters.InformationRowAdapter;
 import com.suttanan.kok.purseflow.others.Transaction;
@@ -32,7 +34,7 @@ import java.util.concurrent.Semaphore;
 /**
  * Created by K.K.K on 4/30/2016.
  */
-public class InformationFragment extends Fragment{
+public class InformationFragment extends Fragment {
 
     final private String unautherizeUser = "Unautherize";
     private ListView listView;
@@ -42,8 +44,7 @@ public class InformationFragment extends Fragment{
     private List<String> dateStrings;
 
     private ArrayList<Transaction> transaction;
-    private String dateFirebaeKey;
-    private HashMap<String, ArrayList> hashdatas;
+    private HashMap<String, ArrayList<Transaction>> hashdatas;
     Firebase ref;
     Firebase myFirebaseRef;
 
@@ -54,7 +55,7 @@ public class InformationFragment extends Fragment{
         context = container.getContext();
         Firebase.setAndroidContext(v.getContext());
 
-        hashdatas = new HashMap<String, ArrayList>();
+        hashdatas = new HashMap<String, ArrayList<Transaction>>();
         datas = new ArrayList<ArrayList<Transaction>>();
         dateStrings = new ArrayList<String>();
 
@@ -68,64 +69,74 @@ public class InformationFragment extends Fragment{
 
         keyRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                dateStrings.add(dataSnapshot.getKey());
-                dateFirebaeKey = dataSnapshot.getKey();
+            public void onChildAdded(final DataSnapshot dateSnapshot, String s) {
+                String text = dateSnapshot.getKey();
+                dateStrings.add(text);
 
-                Firebase childRef = myFirebaseRef.child(dataSnapshot.getKey());
+                Firebase childRef = myFirebaseRef.child(text);
                 Query queryChildRef = childRef.orderByKey();
+
+
+                ArrayList<Transaction> transaction = new ArrayList<Transaction>();
+                hashdatas.put(text, transaction);
 
                 queryChildRef.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Transaction tran = dataSnapshot.getValue(Transaction.class);
-
-                        if(hashdatas.containsKey(dateFirebaeKey)){
-                            hashdatas.get(dateFirebaeKey).add(tran);
-                        } else {
-                            ArrayList<Transaction> transaction = new ArrayList<Transaction>();
-                            transaction.add(tran);
-                            hashdatas.put(dateFirebaeKey, transaction);
-                        }
-                        CreateListview();
+                        hashdatas.get(dateSnapshot.getKey()).add(tran);
                     }
 
                     @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    }
 
                     @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) { }
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    }
 
                     @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    }
 
                     @Override
-                    public void onCancelled(FirebaseError firebaseError) { }
+                    public void onCancelled(FirebaseError firebaseError) {
+                    }
                 });
+
+                CreateListview();
             }
 
             @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) { }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) { }
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) { }
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) { }
+            public void onCancelled(FirebaseError firebaseError) {
+            }
         });
-
-//        String[] keys = {"kok", "kak", "kook", "kai"};
-//        Toast.makeText(v.getContext(), keys.length+" testnaja", Toast.LENGTH_SHORT).show();
-        int[] testInt = {0,1,2,3,4,};
-
 
         test_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(v.getContext(), dateStrings.size()+"", Toast.LENGTH_SHORT).show();
+                for (String key : hashdatas.keySet()) {
+                    Toast.makeText(v.getContext(), key, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(view.getContext(), hashdatas.get(dateStrings.get(position)).toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -134,23 +145,22 @@ public class InformationFragment extends Fragment{
 
     private String RetrieveUser() {
         Profile profile = Profile.getCurrentProfile();
-        if(profile != null){
+        if (profile != null) {
             return profile.getId();
         }
         return unautherizeUser;
     }
 
-    private void CreateListview(){
+    private void CreateListview() {
         String[] keys = new String[dateStrings.size()];
         keys = dateStrings.toArray(keys);
-        Arrays.sort(keys);
         int[] resId = new int[keys.length];
 
-        for(int i = 0; i < keys.length; i++){
+        for (int i = 0; i < keys.length; i++) {
             resId[i] = i;
         }
 
-        InformationRowAdapter informationRowAdapter = new InformationRowAdapter(context, keys, resId);
+        InformationRowAdapter informationRowAdapter = new InformationRowAdapter(context, keys, hashdatas, resId);
 //        listView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.information_row,R.id.information_textView, keys) );
         listView.setAdapter(informationRowAdapter);
     }

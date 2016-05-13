@@ -10,36 +10,43 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.suttanan.kok.purseflow.R;
+import com.suttanan.kok.purseflow.others.Transaction;
 
 import org.w3c.dom.Text;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by K.K.K on 5/7/2016.
  */
 public class InformationRowAdapter extends BaseAdapter {
     private Context mContext;
-    private String[] names;
+    private String[] dateKeys;
+    private HashMap<String, ArrayList<Transaction>> hashdatas;
     private int[] resId;
 
-    public InformationRowAdapter(Context mContext, String[] names) {
+    public InformationRowAdapter(Context mContext, String[] dateKeys) {
         this.mContext = mContext;
-        this.names = names;
+        this.dateKeys = dateKeys;
     }
 
-    public InformationRowAdapter(Context mContext, String[] names, int[] resId) {
+    public InformationRowAdapter(Context mContext, String[] dateKeys, HashMap<String, ArrayList<Transaction>> hash, int[] resId) {
         this.mContext = mContext;
-        this.names = names;
+        this.dateKeys = dateKeys;
         this.resId = resId;
+        this.hashdatas = hash;
     }
 
     @Override
     public int getCount() {
-        return names.length;
+        return dateKeys.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return names[position];
+        return dateKeys[position];
     }
 
     @Override
@@ -53,22 +60,27 @@ public class InformationRowAdapter extends BaseAdapter {
 
         if (view == null) {
             view = mInflater.inflate(R.layout.information_row, parent, false);
-            LinearLayout rootLinearLayout = (LinearLayout) view.findViewById(R.id.information_row_linearLayout);
-            LinearLayout linearLayout = new LinearLayout(view.getContext());
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
-            for (int i = 0; i < 5; i++) {
-                TextView text = new TextView(view.getContext());
-                text.setTextColor(Color.parseColor("#000000"));
-                text.setText("test " + i);
-                linearLayout.addView(text);
-            }
 
-            rootLinearLayout.addView(linearLayout);
+            LinearLayout rootLinearLayout = (LinearLayout) view.findViewById(R.id.information_row_linearLayout);
+
+//            LinearLayout linearLayout = new LinearLayout(view.getContext());
+//            linearLayout.setOrientation(LinearLayout.VERTICAL);
+//
+//            ArrayList<Transaction> arrayList = hashdatas.get(dateKeys[position]);
+//
+//            for (int i = 0; i < arrayList.size(); i++) {
+//                TextView text = new TextView(view.getContext());
+//                text.setTextColor(Color.parseColor("#000000"));
+//                text.setText(arrayList.get(i).getCategory());
+//                linearLayout.addView(text);
+//            }
+//
+//            rootLinearLayout.addView(linearLayout);
 
         }
 
         TextView dateTextView = (TextView) view.findViewById(R.id.information_textView);
-        dateTextView.setText(names[position]);
+        dateTextView.setText(dateKeys[position]);
 
 //        LinearLayout rootLinearLayout = (LinearLayout) view.findViewById(R.id.information_row_linearLayout);
 //        LinearLayout linearLayout = new LinearLayout(view.getContext());
