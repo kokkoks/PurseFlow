@@ -8,4 +8,15 @@
         android:layout_height="wrap_content"
         android:text="Visual"
         android:id="@+id/visual_textView" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/visual_testGraph"
+        android:layout_width="match_parent"
+        android:layout_height="200dip" />
+    <Button
+        android:id="@+id/visual_testButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="set"/>
+
 </LinearLayout>
