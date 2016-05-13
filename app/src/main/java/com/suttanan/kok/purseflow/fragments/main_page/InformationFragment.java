@@ -59,7 +59,7 @@ public class InformationFragment extends Fragment {
         datas = new ArrayList<ArrayList<Transaction>>();
         dateStrings = new ArrayList<String>();
 
-        String user = RetrieveUser();
+        String user = retrieveUser();
         ref = new Firebase("https://purseflow.firebaseio.com/");
         myFirebaseRef = ref.child("users").child(user);
         Query keyRef = myFirebaseRef.orderByKey();
@@ -85,7 +85,7 @@ public class InformationFragment extends Fragment {
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Transaction tran = dataSnapshot.getValue(Transaction.class);
                         hashdatas.get(dateSnapshot.getKey()).add(tran);
-                        CreateListview();
+                        createListview();
                     }
 
                     @Override
@@ -144,7 +144,7 @@ public class InformationFragment extends Fragment {
         return v;
     }
 
-    private String RetrieveUser() {
+    private String retrieveUser() {
         Profile profile = Profile.getCurrentProfile();
         if (profile != null) {
             return profile.getId();
@@ -152,7 +152,7 @@ public class InformationFragment extends Fragment {
         return unautherizeUser;
     }
 
-    private void CreateListview() {
+    private void createListview() {
         String[] keys = new String[dateStrings.size()];
         keys = dateStrings.toArray(keys);
         int[] resId = new int[keys.length];

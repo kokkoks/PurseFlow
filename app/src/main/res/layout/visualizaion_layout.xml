@@ -9,14 +9,23 @@
         android:text="Visual"
         android:id="@+id/visual_textView" />
 
+    <Spinner
+        android:id="@+id/visual_monthSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </Spinner>
+
     <com.jjoe64.graphview.GraphView
-        android:id="@+id/visual_testGraph"
+        android:id="@+id/visual_graphView"
         android:layout_width="match_parent"
         android:layout_height="200dip" />
+
     <Button
-        android:id="@+id/visual_testButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="set"/>
+        android:text="New Button"
+        android:id="@+id/button" />
+
 
 </LinearLayout>
