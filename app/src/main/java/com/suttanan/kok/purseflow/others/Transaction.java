@@ -19,6 +19,9 @@ public class Transaction {
     private Date date;
     private String description;
 
+    public Transaction(){
+        //empty constructor for fire base
+    }
     public Transaction(Date date, String type, int value, String category, String description){
         this.type = type;
         this.value = value;
