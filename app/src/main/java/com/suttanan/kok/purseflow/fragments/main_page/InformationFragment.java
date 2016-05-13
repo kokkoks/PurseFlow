@@ -1,6 +1,5 @@
 package com.suttanan.kok.purseflow.fragments.main_page;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,11 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.Profile;
 import com.firebase.client.ChildEventListener;
@@ -20,16 +18,13 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 import com.suttanan.kok.purseflow.R;
-import com.suttanan.kok.purseflow.adapters.InformationRowAdapter;
+import com.suttanan.kok.purseflow.adapters.ExpandListAdapter;
 import com.suttanan.kok.purseflow.others.Transaction;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 /**
  * Created by K.K.K on 4/30/2016.
@@ -45,13 +40,16 @@ public class InformationFragment extends Fragment {
 
     private ArrayList<Transaction> transaction;
     private HashMap<String, ArrayList<Transaction>> hashdatas;
+    private ExpandableListAdapter expAdapter;
+    private ExpandableListView expList;
+
     Firebase ref;
     Firebase myFirebaseRef;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.information_layout, container, false);
+        View v = inflater.inflate(R.layout.new_information_layout, container, false);
         context = container.getContext();
         Firebase.setAndroidContext(v.getContext());
 
@@ -64,8 +62,9 @@ public class InformationFragment extends Fragment {
         myFirebaseRef = ref.child("users").child(user);
         Query keyRef = myFirebaseRef.orderByKey();
 
-        listView = (ListView) v.findViewById(R.id.listView);
-        test_text = (TextView) v.findViewById(R.id.test_text_info);
+//        listView = (ListView) v.findViewById(R.id.listView);
+//        test_text = (TextView) v.findViewById(R.id.test_text_info);
+        expList = (ExpandableListView) v.findViewById(R.id.information_exp_list);
 
         keyRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -125,21 +124,21 @@ public class InformationFragment extends Fragment {
             }
         });
 
-        test_text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (String key : hashdatas.keySet()) {
-                    Toast.makeText(v.getContext(), key, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(view.getContext(), hashdatas.get(dateStrings.get(position)).toString(), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        test_text.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                for (String key : hashdatas.keySet()) {
+//                    Toast.makeText(v.getContext(), key, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(view.getContext(), hashdatas.get(dateStrings.get(position)).toString(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         return v;
     }
@@ -161,9 +160,13 @@ public class InformationFragment extends Fragment {
             resId[i] = i;
         }
 
-        InformationRowAdapter informationRowAdapter = new InformationRowAdapter(context, keys, hashdatas, resId);
+        expAdapter = new ExpandListAdapter(getContext(), hashdatas, dateStrings);
+        expList.setAdapter(expAdapter);
+//        InformationRowAdapter informationRowAdapter = new InformationRowAdapter(context, keys, hashdatas, resId);
 //        listView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.information_row,R.id.information_textView, keys) );
-        listView.setAdapter(informationRowAdapter);
-        informationRowAdapter.notifyDataSetChanged();
+//        listView.setAdapter(informationRowAdapter);
+//        informationRowAdapter.notifyDataSetChanged();
+
+
     }
 }
