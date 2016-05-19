@@ -55,9 +55,16 @@ public class AddingDescriptionActivity extends Activity {
 
 //        showTransaction();
         initComponents();
+        mappingComponents();
         GetDateFromCalendar();
 
         showDate(year, month + 1, day);
+    }
+
+    private void mappingComponents() {
+        value = transaction[2];
+
+        valueTextView.setText(Integer.parseInt(value)+"");
     }
 
     private void showTransaction() {

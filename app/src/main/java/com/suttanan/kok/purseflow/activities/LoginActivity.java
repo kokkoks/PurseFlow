@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -19,7 +18,6 @@ import com.suttanan.kok.purseflow.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 //import android.support.v7.app.AppCompatActivity;
 
@@ -78,12 +76,6 @@ public class LoginActivity extends FragmentActivity{
                 profile = currentProfile;
             }
         };
-    }
-
-    @OnClick(R.id.show_profile)
-    public void ShowProfile(){
-        profile = Profile.getCurrentProfile();
-        Toast.makeText(this, profile.getFirstName(), Toast.LENGTH_SHORT);
     }
 
     @Override

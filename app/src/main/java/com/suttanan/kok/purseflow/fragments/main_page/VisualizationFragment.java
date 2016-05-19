@@ -1,52 +1,37 @@
 package com.suttanan.kok.purseflow.fragments.main_page;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.facebook.FacebookRequestError;
 import com.facebook.Profile;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.suttanan.kok.purseflow.R;
-import com.suttanan.kok.purseflow.activities.MainActivity;
-import com.suttanan.kok.purseflow.others.ExpensesCategory;
 import com.suttanan.kok.purseflow.others.Transaction;
 import com.suttanan.kok.purseflow.others.TransactionType;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by K.K.K on 4/30/2016.
@@ -160,6 +145,18 @@ public class VisualizationFragment extends Fragment {
         getDateFromCalendar();
         setMonthSpinner();
         setCategorySpinner();
+
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if(isValueX) {
+//                return super.formatLabel(value, isValueX);
+                    return ""+(int)value;
+                }
+
+                return super.formatLabel(value, isValueX);
+            }
+        });
 //        showDate(year, month + 1, day);
         dateStrings = new ArrayList<String>();
         hashdatas = new HashMap<String, ArrayList<Transaction>>();
@@ -284,6 +281,10 @@ public class VisualizationFragment extends Fragment {
             LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints);
             graph.addSeries(series);
         }
+
+        graph.getViewport().setMinX(1.0);
+        graph.getViewport().setMaxX(31.0);
+        graph.getViewport().setXAxisBoundsManual(true);
     }
 
     private void createCategoryGrahpView(){
@@ -308,24 +309,15 @@ public class VisualizationFragment extends Fragment {
             LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints);
             graph.addSeries(series);
         }
+
+        graph.getViewport().setMinX(1.0);
+        graph.getViewport().setMaxX(31.0);
+        graph.getViewport().setXAxisBoundsManual(true);
     }
 
     private boolean checkCategoryAndDate(Transaction tran){
         boolean checkDate = tran.getType().equals(String.valueOf(TransactionType.EXPENSES ));
         boolean checkCategory = tran.getCategory().equalsIgnoreCase(category);
         return checkCategory && checkDate;
-    }
-
-    @OnClick(R.id.button)
-    void toastSomething(){
-        String test = "";
-        for(int i= 0; i < dateTransaction.length; i++){
-            if(dateTransaction[i] == null){
-                test += "0-";
-            } else {
-                test += "1-";
-            }
-        }
-        Toast.makeText(this.getContext(), test, Toast.LENGTH_SHORT).show();
     }
 }
