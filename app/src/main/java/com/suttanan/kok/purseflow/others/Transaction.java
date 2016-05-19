@@ -1,11 +1,12 @@
 package com.suttanan.kok.purseflow.others;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by KOKKOK on 5/10/2016.
  */
-public class Transaction {
+public class Transaction implements Serializable{
     /*
        1 = Type (expenses or incomes)
        2 = value

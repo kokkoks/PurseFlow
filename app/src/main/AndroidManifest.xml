@@ -20,6 +20,7 @@
         <activity android:name=".activities.LoginActivity"></activity>
         <activity android:name=".activities.AddingActivity"></activity>
         <activity android:name=".activities.AddingDescriptionActivity"></activity>
+        <activity android:name=".activities.ItemDescriptionActivity"></activity>
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"

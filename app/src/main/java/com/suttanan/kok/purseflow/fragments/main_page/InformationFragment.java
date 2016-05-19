@@ -1,6 +1,7 @@
 package com.suttanan.kok.purseflow.fragments.main_page;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,10 +20,16 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.suttanan.kok.purseflow.R;
+import com.suttanan.kok.purseflow.activities.ItemDescriptionActivity;
 import com.suttanan.kok.purseflow.adapters.ExpandListAdapter;
 import com.suttanan.kok.purseflow.others.Transaction;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,8 +50,8 @@ public class InformationFragment extends Fragment {
     private ExpandableListAdapter expAdapter;
     private ExpandableListView expList;
 
-    Firebase ref;
-    Firebase myFirebaseRef;
+    private Firebase ref;
+    private Firebase myFirebaseRef;
 
     @Nullable
     @Override
@@ -53,18 +60,8 @@ public class InformationFragment extends Fragment {
         context = container.getContext();
         Firebase.setAndroidContext(v.getContext());
 
-        hashdatas = new HashMap<String, ArrayList<Transaction>>();
-        datas = new ArrayList<ArrayList<Transaction>>();
-        dateStrings = new ArrayList<String>();
-
-        String user = retrieveUser();
-        ref = new Firebase("https://purseflow.firebaseio.com/");
-        myFirebaseRef = ref.child("users").child(user);
+        initComponents(v);
         Query keyRef = myFirebaseRef.orderByKey();
-
-//        listView = (ListView) v.findViewById(R.id.listView);
-//        test_text = (TextView) v.findViewById(R.id.test_text_info);
-        expList = (ExpandableListView) v.findViewById(R.id.information_exp_list);
 
         keyRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -143,6 +140,18 @@ public class InformationFragment extends Fragment {
         return v;
     }
 
+    private void initComponents(View v) {
+        hashdatas = new HashMap<String, ArrayList<Transaction>>();
+        datas = new ArrayList<ArrayList<Transaction>>();
+        dateStrings = new ArrayList<String>();
+
+        String user = retrieveUser();
+        ref = new Firebase("https://purseflow.firebaseio.com/");
+        myFirebaseRef = ref.child("users").child(user);
+
+        expList = (ExpandableListView) v.findViewById(R.id.information_exp_list);
+    }
+
     private String retrieveUser() {
         Profile profile = Profile.getCurrentProfile();
         if (profile != null) {
@@ -154,6 +163,7 @@ public class InformationFragment extends Fragment {
     private void createListview() {
         String[] keys = new String[dateStrings.size()];
         keys = dateStrings.toArray(keys);
+        sortDate();
         int[] resId = new int[keys.length];
 
         for (int i = 0; i < keys.length; i++) {
@@ -162,11 +172,49 @@ public class InformationFragment extends Fragment {
 
         expAdapter = new ExpandListAdapter(getContext(), hashdatas, dateStrings);
         expList.setAdapter(expAdapter);
+        showExpandList(expAdapter, expList);
+
+        expList.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+
+            }
+        });
+
+        expList.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Transaction transaction = hashdatas.get(dateStrings.get(groupPosition)).get(childPosition);
+
+                Intent intent = new Intent(getContext(), ItemDescriptionActivity.class);
+                intent.putExtra("transaction", transaction);
+                startActivity(intent);
+                return false;
+            }
+        });
 //        InformationRowAdapter informationRowAdapter = new InformationRowAdapter(context, keys, hashdatas, resId);
 //        listView.setAdapter(new ArrayAdapter<String>(getActivity(), R.layout.information_row,R.id.information_textView, keys) );
 //        listView.setAdapter(informationRowAdapter);
 //        informationRowAdapter.notifyDataSetChanged();
+    }
 
+    private void sortDate() {
+        Collections.sort(dateStrings, new Comparator<String>() {
+            DateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            @Override
+            public int compare(String o1, String o2) {
+                try {
+                    return f.parse(o2).compareTo(f.parse(o1));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
+    }
 
+    private void showExpandList(ExpandableListAdapter adapter, ExpandableListView expList) {
+        for(int i = 0; i < adapter.getGroupCount(); i++){
+            expList.expandGroup(i);
+        }
     }
 }

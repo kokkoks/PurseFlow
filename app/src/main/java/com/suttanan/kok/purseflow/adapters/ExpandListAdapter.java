@@ -9,9 +9,7 @@ import android.widget.TextView;
 
 import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.others.Transaction;
-import com.suttanan.kok.purseflow.others.TransactionGroup;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,8 +76,19 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
             convertView = inf.inflate(R.layout.new_information_group_item, null);
         }
         TextView date = (TextView) convertView.findViewById(R.id.information_group_dateTextView);
+        TextView value = (TextView) convertView.findViewById(R.id.information_group_value);
+        value.setText(sumGroupValue(groupPosition) + " BTH");
         date.setText(dateStrings.get(groupPosition));
         return convertView;
+    }
+
+    private int sumGroupValue(int groupPosition) {
+        ArrayList<Transaction> transactions = hashdatas.get(dateStrings.get(groupPosition));
+        int sum = 0;
+        for(int i = 0; i < transactions.size(); i++){
+            sum += transactions.get(i).getValue();
+        }
+        return sum;
     }
 
     @Override
