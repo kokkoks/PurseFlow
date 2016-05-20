@@ -102,7 +102,8 @@ public class LoginActivity extends FragmentActivity{
             image.setImageResource(R.drawable.anonymous_person);
         }  else {
             profile = Profile.getCurrentProfile();
-            image.setImageURI(Uri.parse(String.valueOf(profile.getProfilePictureUri(200, 200))));
+            String imageUri = profile.getProfilePictureUri(200, 200).toString();
+            image.setImageURI(Uri.parse(imageUri));
 
         }
         showUserName();

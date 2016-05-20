@@ -114,11 +114,13 @@ public class IncomesFragment extends Fragment {
         valueTextView.setText(value);
     }
 
-    @OnClick(R.id.adding_expenses_dotBtn)
+    @OnClick(R.id.adding_incomes_dotBtn)
     public void inputDot(Button button){
         String[] text = value.split("\\.");
         if(text.length == 1){
-            value += ".";
+            if(!value.contains(".")) {
+                value += ".";
+            }
         }
         valueTextView.setText(value+"0");
     }
