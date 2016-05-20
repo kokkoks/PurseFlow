@@ -15,7 +15,7 @@ public class Transaction implements Serializable{
        5 = description
        */
     private String type;
-    private int value;
+    private float value;
     private String category;
     private Date date;
     private String description;
@@ -23,7 +23,7 @@ public class Transaction implements Serializable{
     public Transaction(){
         //empty constructor for fire base
     }
-    public Transaction(Date date, String type, int value, String category, String description){
+    public Transaction(Date date, String type, float value, String category, String description){
         this.type = type;
         this.value = value;
         this.category = category;
@@ -39,7 +39,7 @@ public class Transaction implements Serializable{
         this.type = type;
     }
 
-    public int getValue() {
+    public float getValue() {
 
         return value;
     }

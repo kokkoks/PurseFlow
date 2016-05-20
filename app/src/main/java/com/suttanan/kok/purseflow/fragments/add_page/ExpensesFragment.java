@@ -94,9 +94,28 @@ public class ExpensesFragment extends Fragment{
             R.id.adding_expenses_6Btn, R.id.adding_expenses_7Btn,
             R.id.adding_expenses_8Btn, R.id.adding_expenses_9Btn})
     public void inputNumber(Button button){
-        value += button.getText().toString();
+        String[] text = value.split("\\.");
+        if(text.length == 1 ) {
+            if (text[0].length() < 10) {
+                value += button.getText().toString();
+            }
+        } else {
+            if(text[1].length() < 2){
+                value += button.getText().toString();
+            }
+        }
+
         valueTextView.setText(value);
+
 //        Toast.makeText(this.getContext(), value, Toast.LENGTH_SHORT).show();
+    }
+    @OnClick(R.id.adding_expenses_dotBtn)
+    public void inputDot(Button button){
+        String[] text = value.split("\\.");
+        if(text.length == 1){
+            value += ".";
+        }
+        valueTextView.setText(value+"0");
     }
 
     @OnClick(R.id.adding_expenses_delBtn)
@@ -105,7 +124,7 @@ public class ExpensesFragment extends Fragment{
             value = value.substring(0, value.length()-1);
             valueTextView.setText(value);
         } else{
-            valueTextView.setText("0.0");
+            valueTextView.setText("0.00");
         }
     }
 

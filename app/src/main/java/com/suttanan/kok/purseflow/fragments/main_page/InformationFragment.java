@@ -12,6 +12,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.Profile;
 import com.firebase.client.ChildEventListener;
@@ -80,8 +81,11 @@ public class InformationFragment extends Fragment {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Transaction tran = dataSnapshot.getValue(Transaction.class);
-                        hashdatas.get(dateSnapshot.getKey()).add(tran);
-                        createListview();
+                        Toast.makeText(getContext(), tran.getValue()+"", Toast.LENGTH_SHORT).show();
+                        if(dateSnapshot.getKey() != null) {
+                            hashdatas.get(dateSnapshot.getKey()).add(tran);
+                            createListview();
+                        }
                     }
 
                     @Override
