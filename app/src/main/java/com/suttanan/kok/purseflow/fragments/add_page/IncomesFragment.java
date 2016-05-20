@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,7 +64,7 @@ public class IncomesFragment extends Fragment {
     @BindView(R.id.adding_incomes_enterBtn)
     Button enterBtn;
     @BindView(R.id.adding_incomes_delBtn)
-    Button delBtn;
+    ImageButton delBtn;
 
     private String value;
     private String category;
@@ -77,6 +78,17 @@ public class IncomesFragment extends Fragment {
 
         initComponents();
 
+        delBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (value.length() > 0) {
+                    value = value.substring(0, value.length() - 1);
+                    valueTextView.setText(value);
+                } else {
+                    valueTextView.setText("0.0");
+                }
+            }
+        });
         return v;
     }
 
@@ -125,15 +137,15 @@ public class IncomesFragment extends Fragment {
         valueTextView.setText(value+"0");
     }
 
-    @OnClick(R.id.adding_incomes_delBtn)
-    public void deleteNumber(Button button) {
-        if (value.length() > 0) {
-            value = value.substring(0, value.length() - 1);
-            valueTextView.setText(value);
-        } else {
-            valueTextView.setText("0.0");
-        }
-    }
+//    @OnClick(R.id.adding_incomes_delBtn)
+//    public void deleteNumber(Button button) {
+//        if (value.length() > 0) {
+//            value = value.substring(0, value.length() - 1);
+//            valueTextView.setText(value);
+//        } else {
+//            valueTextView.setText("0.0");
+//        }
+//    }
 
     @OnClick(R.id.adding_incomes_enterBtn)
     public void enterNextPage(Button button) {

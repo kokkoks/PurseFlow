@@ -88,7 +88,7 @@ public class HomeFragment extends Fragment {
             Profile profile = Profile.getCurrentProfile();
             userName += profile.getFirstName() + " " + profile.getLastName() ;
         } else {
-            userName = "Unautherize";
+            userName = "Tap to Login";
         }
         userNameTxt.setText(userName);
     }

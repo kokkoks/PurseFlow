@@ -100,8 +100,8 @@ public class ExpensesFragment extends Fragment{
     public void selectCategory(Button button){
         String text = button.getText().toString();
         category = text;
-        removeBackgroundResource();
-        button.setBackgroundResource(R.drawable.button_category);
+//        removeBackgroundResource();
+//        button.setBackgroundResource(R.drawable.button_category);
         Toast.makeText(this.getContext(), category, Toast.LENGTH_SHORT).show();
     }
 

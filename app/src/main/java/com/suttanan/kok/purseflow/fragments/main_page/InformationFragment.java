@@ -67,7 +67,7 @@ public class InformationFragment extends Fragment {
         keyRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(final DataSnapshot dateSnapshot, String s) {
-                String text = dateSnapshot.getKey();
+                final String text = dateSnapshot.getKey();
                 dateStrings.add(text);
 
                 Firebase childRef = myFirebaseRef.child(text);
@@ -81,11 +81,12 @@ public class InformationFragment extends Fragment {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Transaction tran = dataSnapshot.getValue(Transaction.class);
-                        Toast.makeText(getContext(), tran.getValue()+"", Toast.LENGTH_SHORT).show();
-                        if(dateSnapshot.getKey() != null) {
+//                        Toast.makeText(getContext(), tran.getValue()+"", Toast.LENGTH_SHORT).show();
+                        if (hashdatas.get(dateSnapshot.getKey()) != null) {
                             hashdatas.get(dateSnapshot.getKey()).add(tran);
                             createListview();
                         }
+
                     }
 
                     @Override
