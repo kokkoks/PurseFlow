@@ -10,7 +10,6 @@ import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.adapters.SupportFragmentTabListener;
 import com.suttanan.kok.purseflow.fragments.main_page.HomeFragment;
 import com.suttanan.kok.purseflow.fragments.main_page.InformationFragment;
-import com.suttanan.kok.purseflow.fragments.main_page.TestFragment;
 import com.suttanan.kok.purseflow.fragments.main_page.VisualizationFragment;
 
 public class MainActivity extends AppCompatActivity{
