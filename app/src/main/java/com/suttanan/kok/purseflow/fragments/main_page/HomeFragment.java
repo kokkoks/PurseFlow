@@ -74,6 +74,7 @@ public class HomeFragment extends Fragment {
         myFirebaseRef = ref.child("users").child(user);
 
         sum = 0;
+        setSumText();
     }
 
     @Override
@@ -84,9 +85,9 @@ public class HomeFragment extends Fragment {
 
     private void showUserName() {
         String userName = "User Name : ";
-        if(Profile.getCurrentProfile() != null) {
+        if (Profile.getCurrentProfile() != null) {
             Profile profile = Profile.getCurrentProfile();
-            userName += profile.getFirstName() + " " + profile.getLastName() ;
+            userName += profile.getFirstName() + " " + profile.getLastName();
         } else {
             userName = "Tap to Login";
         }
@@ -109,7 +110,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Transaction tran = dataSnapshot.getValue(Transaction.class);
-                        if(tran.getType().equals(String.valueOf(TransactionType.EXPENSES))){
+                        if (tran.getType().equals(String.valueOf(TransactionType.EXPENSES))) {
                             sum -= tran.getValue();
                         } else {
                             sum += tran.getValue();
@@ -154,9 +155,16 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void setSumText(){
-        currencyBtn.setText(sum+"");
+    private void setSumText() {
+
+        currencyBtn.setText(sum + " THB");
+        if(sum >= 0){
+            currencyBtn.setTextColor(getResources().getColor(R.color.colorPlusValue));
+        } else {
+            currencyBtn.setTextColor(getResources().getColor(R.color.colorMinusValue));
+        }
     }
+
     private String retrieveUser() {
         Profile profile = Profile.getCurrentProfile();
         if (profile != null) {
