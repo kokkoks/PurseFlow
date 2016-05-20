@@ -1,10 +1,18 @@
 package com.suttanan.kok.purseflow.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -15,6 +23,10 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.suttanan.kok.purseflow.R;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,8 +42,11 @@ public class LoginActivity extends FragmentActivity{
     CallbackManager callbackManager;
     AccessTokenTracker accessTokenTracker;
     AccessToken accessToken;
-    ProfileTracker profileTracker;
-    Profile profile;
+    private ProfileTracker profileTracker;
+    private Profile profile;
+
+    private TextView userNameTxt;
+    private ImageView image;
 
     //butter knife
     @BindView(R.id.login_button) LoginButton loginButton;
@@ -41,6 +56,8 @@ public class LoginActivity extends FragmentActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_layout);
         ButterKnife.bind(this);
+
+        initComponents();
 
         callbackManager = CallbackManager.Factory.create();
         loginButton.setReadPermissions("public_profile");
@@ -78,6 +95,23 @@ public class LoginActivity extends FragmentActivity{
         };
     }
 
+    private void initComponents() {
+        userNameTxt  = (TextView) findViewById(R.id.login_name);
+        image = (ImageView) findViewById(R.id.login_image);
+
+        if(Profile.getCurrentProfile() == null){
+            image.setImageResource(R.drawable.anonymous_person);
+        }  else {
+            profile = Profile.getCurrentProfile();
+            String imageUri = profile.getProfilePictureUri(200, 200).toString();
+            Glide.with(this).load(imageUri).into(image);
+
+
+        }
+        showUserName();
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -89,5 +123,16 @@ public class LoginActivity extends FragmentActivity{
         super.onDestroy();
         profileTracker.stopTracking();
         accessTokenTracker.stopTracking();
+    }
+
+    private void showUserName() {
+        String userName;
+        if(Profile.getCurrentProfile() != null) {
+            Profile profile = Profile.getCurrentProfile();
+            userName = profile.getFirstName() + " " + profile.getLastName() ;
+        } else {
+            userName = "Unautherize";
+        }
+        userNameTxt.setText(userName);
     }
 }

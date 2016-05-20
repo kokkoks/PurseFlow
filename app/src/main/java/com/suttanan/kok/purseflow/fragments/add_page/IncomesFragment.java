@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,7 +64,7 @@ public class IncomesFragment extends Fragment {
     @BindView(R.id.adding_incomes_enterBtn)
     Button enterBtn;
     @BindView(R.id.adding_incomes_delBtn)
-    Button delBtn;
+    ImageButton delBtn;
 
     private String value;
     private String category;
@@ -77,6 +78,17 @@ public class IncomesFragment extends Fragment {
 
         initComponents();
 
+        delBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (value.length() > 0) {
+                    value = value.substring(0, value.length() - 1);
+                    valueTextView.setText(value);
+                } else {
+                    valueTextView.setText("0.0");
+                }
+            }
+        });
         return v;
     }
 
@@ -99,24 +111,44 @@ public class IncomesFragment extends Fragment {
             R.id.adding_incomes_4Btn, R.id.adding_incomes_5Btn,
             R.id.adding_incomes_6Btn, R.id.adding_incomes_7Btn,
             R.id.adding_incomes_8Btn, R.id.adding_incomes_9Btn})
-    public void InputNumber(Button button) {
-        value += button.getText().toString();
+    public void inputNumber(Button button) {
+        String[] text = value.split("\\.");
+        if(text.length == 1 ) {
+            if (text[0].length() < 10) {
+                value += button.getText().toString();
+            }
+        } else {
+            if(text[1].length() < 2){
+                value += button.getText().toString();
+            }
+        }
+
         valueTextView.setText(value);
-        Toast.makeText(this.getContext(), value, Toast.LENGTH_SHORT).show();
     }
 
-    @OnClick(R.id.adding_incomes_delBtn)
-    public void DeleteNumber(Button button) {
-        if (value.length() > 0) {
-            value = value.substring(0, value.length() - 1);
-            valueTextView.setText(value);
-        } else {
-            valueTextView.setText("0.0");
+    @OnClick(R.id.adding_incomes_dotBtn)
+    public void inputDot(Button button){
+        String[] text = value.split("\\.");
+        if(text.length == 1){
+            if(!value.contains(".")) {
+                value += ".";
+            }
         }
+        valueTextView.setText(value+"0");
     }
+
+//    @OnClick(R.id.adding_incomes_delBtn)
+//    public void deleteNumber(Button button) {
+//        if (value.length() > 0) {
+//            value = value.substring(0, value.length() - 1);
+//            valueTextView.setText(value);
+//        } else {
+//            valueTextView.setText("0.0");
+//        }
+//    }
 
     @OnClick(R.id.adding_incomes_enterBtn)
-    public void EnterNextPage(Button button) {
+    public void enterNextPage(Button button) {
         if (category != null) {
             if(value.equals("")) {
                 value = "0";

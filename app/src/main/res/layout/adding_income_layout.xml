@@ -5,7 +5,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="horizontal"
         android:gravity="right">
 
@@ -13,159 +14,162 @@
             android:id="@+id/adding_incomes_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="@style/TransactionTextView"
             android:text=""/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="THB"/>
+            android:layout_gravity="center"
+            style="@style/TransactionTextView"
+            android:text=" THB"/>
 
-        <Button
+        <ImageButton
             android:id="@+id/adding_incomes_delBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/delete_icon"
+            android:layout_gravity="center"
             android:text="X"/>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/adding_incomes_salaryBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="salary"/>
+        <LinearLayout
+            style="@style/ButtonLinearLayout">
 
-        <Button
-            android:id="@+id/adding_incomes_bussinessBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="business"/>
+            <Button
+                android:id="@+id/adding_incomes_salaryBtn"
+                style="@style/ButtonLayout.category"
+                android:drawableTop="@drawable/income_salary"
+                android:text="salary"/>
 
-        <Button
-            android:id="@+id/adding_incomes_giftBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="gift"/>
+            <Button
+                android:id="@+id/adding_incomes_bussinessBtn"
+                style="@style/ButtonLayout.category"
+                android:drawableTop="@drawable/income_business"
+                android:text="business"/>
 
-        <Button
-            android:id="@+id/adding_incomes_extraBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="extra"/>
+            <Button
+                android:id="@+id/adding_incomes_giftBtn"
+                style="@style/ButtonLayout.category"
+                android:drawableTop="@drawable/income_gift"
+                android:text="gift"/>
+
+            <Button
+                android:id="@+id/adding_incomes_extraBtn"
+                style="@style/ButtonLayout.category"
+                android:drawableTop="@drawable/income_gift"
+                android:text="extra"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ButtonLinearLayout"></LinearLayout>
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/adding_incomes_1Btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="1"/>
+        <LinearLayout
+            style="@style/ButtonLinearLayout">
 
-        <Button
-            android:id="@+id/adding_incomes_2Btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="2"/>
+            <Button
+                android:id="@+id/adding_incomes_1Btn"
+                style="@style/ButtonLayout.num"
+                android:background="@drawable/button_number"
+                android:text="1"/>
 
-        <Button
-            android:id="@+id/adding_incomes_3Btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="3"/>
+            <Button
+                android:id="@+id/adding_incomes_2Btn"
+                style="@style/ButtonLayout.num"
+                android:background="@drawable/button_number"
+                android:text="2"/>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/adding_incomes_3Btn"
+                style="@style/ButtonLayout.num"
+                android:background="@drawable/button_number"
+                android:text="3"/>
 
-        <Button
-            android:id="@+id/adding_incomes_4Btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="4"/>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/adding_incomes_5Btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="5"/>
+        <LinearLayout
+            style="@style/ButtonLinearLayout">
 
-        <Button
-            android:id="@+id/adding_incomes_6Btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="6"/>
+            <Button
+                android:id="@+id/adding_incomes_4Btn"
+                style="@style/ButtonLayout.num"
+                android:background="@drawable/button_number"
+                android:text="4"/>
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/adding_incomes_5Btn"
+                style="@style/ButtonLayout.num"
+                android:background="@drawable/button_number"
+                android:text="5"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/adding_incomes_6Btn"
+                style="@style/ButtonLayout.num"
+                android:background="@drawable/button_number"
+                android:text="6"/>
 
-        <Button
-            android:id="@+id/adding_incomes_7Btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="7"/>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/adding_incomes_8Btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="8"/>
+        <LinearLayout
+            style="@style/ButtonLinearLayout">
 
-        <Button
-            android:id="@+id/adding_incomes_9Btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="9"/>
+            <Button
+                android:id="@+id/adding_incomes_7Btn"
+                style="@style/ButtonLayout.num"
+                android:background="@drawable/button_number"
+                android:text="7"/>
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/adding_incomes_8Btn"
+                style="@style/ButtonLayout.num"
+                android:background="@drawable/button_number"
+                android:text="8"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/adding_incomes_9Btn"
+                style="@style/ButtonLayout.num"
+                android:background="@drawable/button_number"
+                android:text="9"/>
 
-        <Button
-            android:id="@+id/adding_incomes_dotBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="."/>
+        </LinearLayout>
 
-        <Button
-            android:id="@+id/adding_incomes_0Btn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="0"/>
+        <LinearLayout
+            style="@style/ButtonLinearLayout">
 
-        <Button
-            android:id="@+id/adding_incomes_enterBtn"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Enter"/>
+            <Button
+                android:id="@+id/adding_incomes_dotBtn"
+                style="@style/ButtonLayout.num"
+                android:background="@drawable/button_number"
+                android:text="."/>
 
+            <Button
+                android:id="@+id/adding_incomes_0Btn"
+                style="@style/ButtonLayout.num"
+                android:background="@drawable/button_number"
+                android:text="0"/>
+
+            <Button
+                android:id="@+id/adding_incomes_enterBtn"
+                style="@style/ButtonLayout.num"
+                android:background="@drawable/button_number"
+                android:text="Enter"/>
+
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

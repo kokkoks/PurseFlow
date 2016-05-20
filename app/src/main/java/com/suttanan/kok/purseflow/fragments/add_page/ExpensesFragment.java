@@ -1,6 +1,7 @@
 package com.suttanan.kok.purseflow.fragments.add_page;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +17,7 @@ import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.activities.AddingDescriptionActivity;
 import com.suttanan.kok.purseflow.others.TransactionType;
 
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -47,10 +50,11 @@ public class ExpensesFragment extends Fragment{
 
     @BindView(R.id.adding_expenses_dotBtn) Button dotBtn;
     @BindView(R.id.adding_expenses_enterBtn) Button enterBtn;
-    @BindView(R.id.adding_expenses_delBtn) Button delBtn;
+    @BindView(R.id.adding_expenses_delBtn) ImageButton delBtn;
 
     private String value;
     private String category;
+
     /*
     0 = user
     1 = date
@@ -69,6 +73,17 @@ public class ExpensesFragment extends Fragment{
 
         initComponents();
 
+        delBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(value.length() > 0){
+                    value = value.substring(0, value.length()-1);
+                    valueTextView.setText(value);
+                } else{
+                    valueTextView.setText("0.00");
+                }
+            }
+        });
         return v;
     }
 
@@ -85,7 +100,21 @@ public class ExpensesFragment extends Fragment{
     public void selectCategory(Button button){
         String text = button.getText().toString();
         category = text;
+//        removeBackgroundResource();
+//        button.setBackgroundResource(R.drawable.button_category);
         Toast.makeText(this.getContext(), category, Toast.LENGTH_SHORT).show();
+    }
+
+    private void removeBackgroundResource() {
+        foodBtn.setBackgroundDrawable(null);
+        shopBtn.setBackgroundResource(0);
+        familyBtn.setBackgroundResource(0);
+        travelBtn.setBackgroundResource(0);
+        entertainBtn.setBackgroundResource(0);
+        homeBtn.setBackgroundResource(0);
+        healthBtn.setBackgroundResource(0);
+        otherBtn.setBackgroundResource(0);
+
     }
 
     @OnClick({R.id.adding_expenses_0Btn, R.id.adding_expenses_1Btn,
@@ -94,20 +123,41 @@ public class ExpensesFragment extends Fragment{
             R.id.adding_expenses_6Btn, R.id.adding_expenses_7Btn,
             R.id.adding_expenses_8Btn, R.id.adding_expenses_9Btn})
     public void inputNumber(Button button){
-        value += button.getText().toString();
+        String[] text = value.split("\\.");
+        if(text.length == 1 ) {
+            if (text[0].length() < 10) {
+                value += button.getText().toString();
+            }
+        } else {
+            if(text[1].length() < 2){
+                value += button.getText().toString();
+            }
+        }
+
         valueTextView.setText(value);
+
 //        Toast.makeText(this.getContext(), value, Toast.LENGTH_SHORT).show();
     }
-
-    @OnClick(R.id.adding_expenses_delBtn)
-    public void deleteNumber(Button button){
-        if(value.length() > 0){
-            value = value.substring(0, value.length()-1);
-            valueTextView.setText(value);
-        } else{
-            valueTextView.setText("0.0");
+    @OnClick(R.id.adding_expenses_dotBtn)
+    public void inputDot(Button button){
+        String[] text = value.split("\\.");
+        if(text.length == 1){
+            if(!value.contains(".")) {
+                value += ".";
+            }
         }
+        valueTextView.setText(value+"0");
     }
+
+//    @OnClick(R.id.adding_expenses_delBtn)
+//    public void deleteNumber(Button button){
+//        if(value.length() > 0){
+//            value = value.substring(0, value.length()-1);
+//            valueTextView.setText(value);
+//        } else{
+//            valueTextView.setText("0.00");
+//        }
+//    }
 
     @OnClick(R.id.adding_expenses_enterBtn)
     public void enterNextPage(Button button){
