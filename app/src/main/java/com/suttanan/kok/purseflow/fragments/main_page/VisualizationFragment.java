@@ -50,6 +50,8 @@ public class VisualizationFragment extends Fragment {
     private ArrayList<Transaction>[] dateTransaction;
     private List<String> dateStrings;
 
+    private int sum;
+
     //    @BindView(R.id.visual_dateTextView) TextView dateText;
     @BindView(R.id.visual_graphView) GraphView graph;
     @BindView(R.id.visual_categorySpinner) Spinner categorySpinner;
@@ -59,6 +61,7 @@ public class VisualizationFragment extends Fragment {
     private int year, month, day;
     private String category;
 
+    private boolean checkInit = false;
 
     @Nullable
     @Override
@@ -146,6 +149,13 @@ public class VisualizationFragment extends Fragment {
     private void initComponents() {
         getDateFromCalendar();
 
+        graph.getViewport().setMinX(1.0);
+        graph.getViewport().setMaxX(31.0);
+        graph.getViewport().setXAxisBoundsManual(true);
+
+        setMonthSpinner();
+        setCategorySpinner();
+
         graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
             @Override
             public String formatLabel(double value, boolean isValueX) {
@@ -165,8 +175,6 @@ public class VisualizationFragment extends Fragment {
         ref = new Firebase("https://purseflow.firebaseio.com/");
         myFirebaseRef = ref.child("users").child(user);
 
-        setMonthSpinner();
-        setCategorySpinner();
 //        getDataFromFirebase();
     }
 
@@ -225,7 +233,9 @@ public class VisualizationFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 month = position;
-                getDataFromFirebase();
+                if(checkInit) {
+                    getDataFromFirebase();
+                }
 //                createGrahpView();
             }
 
@@ -246,9 +256,11 @@ public class VisualizationFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] categorys = getResources().getStringArray(R.array.category_name);
                 category = categorys[position];
-                getDataFromFirebase();
+                if(!checkInit) {
+                    getDataFromFirebase();
+                    checkInit = true;
+                }
 //                createCategoryGrahpView();
-//                Toast.makeText(getContext(), category, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -274,7 +286,7 @@ public class VisualizationFragment extends Fragment {
                 if (transactions == null) {
                     dataPoints[i] = new DataPoint(i, 0);
                 } else {
-                    int sum = 0;
+                    sum = 0;
                     for (int j = 0; j < transactions.size(); j++) {
                         if (transactions.get(j).getType().equals(String.valueOf(TransactionType.EXPENSES))) {
                             sum += transactions.get(j).getValue();
@@ -286,10 +298,6 @@ public class VisualizationFragment extends Fragment {
             LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints);
             graph.addSeries(series);
         }
-
-        graph.getViewport().setMinX(1.0);
-        graph.getViewport().setMaxX(31.0);
-        graph.getViewport().setXAxisBoundsManual(true);
     }
 
     private void createCategoryGrahpView(){
@@ -315,9 +323,9 @@ public class VisualizationFragment extends Fragment {
             graph.addSeries(series);
         }
 
-        graph.getViewport().setMinX(1.0);
-        graph.getViewport().setMaxX(31.0);
-        graph.getViewport().setXAxisBoundsManual(true);
+//        graph.getViewport().setMinX(1.0);
+//        graph.getViewport().setMaxX(31.0);
+//        graph.getViewport().setXAxisBoundsManual(true);
     }
 
     private boolean checkCategoryAndDate(Transaction tran){
