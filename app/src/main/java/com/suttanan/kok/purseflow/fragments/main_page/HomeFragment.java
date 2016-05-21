@@ -23,6 +23,7 @@ import com.suttanan.kok.purseflow.activities.LoginActivity;
 import com.suttanan.kok.purseflow.others.Transaction;
 import com.suttanan.kok.purseflow.others.TransactionType;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -36,7 +37,7 @@ public class HomeFragment extends Fragment {
     private Firebase ref;
     private Firebase myFirebaseRef;
 
-    private int sum;
+    private float sum;
 
     @Nullable
     @Override
@@ -156,12 +157,14 @@ public class HomeFragment extends Fragment {
     }
 
     private void setSumText() {
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
 
-        currencyBtn.setText(sum + " THB");
+        currencyBtn.setText(df.format(sum) + " THB");
         if(sum >= 0){
-            currencyBtn.setTextColor(getResources().getColor(R.color.colorPlusValue));
+            currencyBtn.setTextColor(this.getResources().getColor(R.color.colorPlusValue));
         } else {
-            currencyBtn.setTextColor(getResources().getColor(R.color.colorMinusValue));
+            currencyBtn.setTextColor(this.getResources().getColor(R.color.colorMinusValue));
         }
     }
 

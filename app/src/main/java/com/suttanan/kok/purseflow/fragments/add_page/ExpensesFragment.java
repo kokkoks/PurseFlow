@@ -78,9 +78,13 @@ public class ExpensesFragment extends Fragment{
             public void onClick(View v) {
                 if(value.length() > 0){
                     value = value.substring(0, value.length()-1);
+                    if(value.length() == 0){
+                        value = "0";
+                    }
                     valueTextView.setText(value);
                 } else{
-                    valueTextView.setText("0.00");
+                    value = "0";
+                    valueTextView.setText(value);
                 }
             }
         });
@@ -89,8 +93,22 @@ public class ExpensesFragment extends Fragment{
 
     private void initComponents(){
         transaction = new String[5];
-        value = "";
-        valueTextView.setText("0.0");
+        value = "0";
+        valueTextView.setText(value);
+
+//        addBackgroundResource();
+        removeBackgroundResource();
+    }
+
+    private void addBackgroundResource() {
+        foodBtn.setBackgroundResource(R.drawable.button_category);
+        shopBtn.setBackgroundResource(R.drawable.button_category);
+        familyBtn.setBackgroundResource(R.drawable.button_category);
+        travelBtn.setBackgroundResource(R.drawable.button_category);
+        entertainBtn.setBackgroundResource(R.drawable.button_category);
+        homeBtn.setBackgroundResource(R.drawable.button_category);
+        healthBtn.setBackgroundResource(R.drawable.button_category);
+        otherBtn.setBackgroundResource(R.drawable.button_category);
     }
 
     @OnClick({R.id.adding_expenses_foodBtn, R.id.adding_expenses_shopBtn,
@@ -100,13 +118,13 @@ public class ExpensesFragment extends Fragment{
     public void selectCategory(Button button){
         String text = button.getText().toString();
         category = text;
-//        removeBackgroundResource();
-//        button.setBackgroundResource(R.drawable.button_category);
+        removeBackgroundResource();
+        button.setBackgroundResource(R.drawable.button_category);
         Toast.makeText(this.getContext(), category, Toast.LENGTH_SHORT).show();
     }
 
     private void removeBackgroundResource() {
-        foodBtn.setBackgroundDrawable(null);
+        foodBtn.setBackgroundResource(0);
         shopBtn.setBackgroundResource(0);
         familyBtn.setBackgroundResource(0);
         travelBtn.setBackgroundResource(0);
@@ -114,7 +132,6 @@ public class ExpensesFragment extends Fragment{
         homeBtn.setBackgroundResource(0);
         healthBtn.setBackgroundResource(0);
         otherBtn.setBackgroundResource(0);
-
     }
 
     @OnClick({R.id.adding_expenses_0Btn, R.id.adding_expenses_1Btn,
@@ -124,32 +141,64 @@ public class ExpensesFragment extends Fragment{
             R.id.adding_expenses_8Btn, R.id.adding_expenses_9Btn})
     public void inputNumber(Button button){
         String[] text = value.split("\\.");
-        if(text.length == 1 ) {
-            if (text[0].length() < 10) {
-                value += button.getText().toString();
-            }
-        } else {
-            if(text[1].length() < 2){
-                if(button.getText().equals("0")){
-                    if(text[1].length() == 1){
-                        return;
-                    }
-                }
-                value += button.getText().toString();
-            }
-        }
-        valueTextView.setText(value);
+//        if(text[0].equals("") && button.getText().toString().equals("0")){
+//            return;
+//        }
+//        if(text.length == 1 ) {
+//            if (text[0].length() < 10) {
+//                value += button.getText().toString();
+//            }
+//        } else {
+//            if(text[1].length() < 2){
+//                if(button.getText().equals("0")){
+//                    if(text[1].length() == 1){
+//                        return;
+//                    }
+//                }
+//                value += button.getText().toString();
+//            }
+//        }
+//        valueTextView.setText(value);
 
 //        Toast.makeText(this.getContext(), value, Toast.LENGTH_SHORT).show();
+
+        if(text[0].length() > 10){
+            return;
+        }
+        if(value.equals("0")){
+            if(button.getText().toString().equals("0")){
+            }else {
+                value = button.getText().toString();
+            }
+        } else {
+            if(text.length ==1) {
+                value += button.getText().toString();
+            } else {
+                if(text[1].length() < 2){
+                    value += button.getText().toString();
+                }
+            }
+        }
+
+        valueTextView.setText(value);
+        Toast.makeText(this.getContext(), value, Toast.LENGTH_SHORT).show();
     }
+
     @OnClick(R.id.adding_expenses_dotBtn)
     public void inputDot(Button button){
         String[] text = value.split("\\.");
-        if(text.length == 1){
-            if(!value.contains(".")) {
-                value += ".";
-            }
-        } else if(text[1].length() == 0){
+//        if(text.length == 1){
+//            if(!value.contains(".")) {
+//                value += ".";
+//            }
+//        } else if(text[1].length() == 0){
+//            valueTextView.setText(value + "0");
+//        }
+        if(value.contains(".")){
+            return;
+        }
+        if(text.length ==1){
+            value +=".";
             valueTextView.setText(value + "0");
         }
     }
@@ -166,16 +215,21 @@ public class ExpensesFragment extends Fragment{
 
     @OnClick(R.id.adding_expenses_enterBtn)
     public void enterNextPage(Button button){
-        if(category != null){
-            if(value.equals("")){
-                value = "0";
+        String[] text = value.split("\\.");
+        if(category != null ){
+            if(Float.parseFloat(value) != 0) {
+                if (value.contains(".") && text.length == 1) {
+                    value += "0";
+                }
+                transaction[1] = String.valueOf(TransactionType.EXPENSES);
+                transaction[2] = value;
+                transaction[3] = category;
+                Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
+                intent.putExtra("transaction", transaction);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this.getContext(), "Input invalid number", Toast.LENGTH_LONG).show();
             }
-            transaction[1] = String.valueOf(TransactionType.EXPENSES);
-            transaction[2] = value;
-            transaction[3] = category;
-            Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
-            intent.putExtra("transaction", transaction);
-            startActivity(intent);
         } else {
             Toast.makeText(this.getContext(), "Please select category", Toast.LENGTH_LONG).show();
         }
