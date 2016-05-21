@@ -82,9 +82,9 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    private int sumGroupValue(int groupPosition) {
+    private float sumGroupValue(int groupPosition) {
         ArrayList<Transaction> transactions = hashdatas.get(dateStrings.get(groupPosition));
-        int sum = 0;
+        float sum = 0;
         for(int i = 0; i < transactions.size(); i++){
             sum += transactions.get(i).getValue();
         }
@@ -103,7 +103,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
         TextView value = (TextView) convertView.findViewById(R.id.information_child_value);
 
         category.setText(child.getCategory());
-        value.setText(child.getValue()+"");
+        value.setText(child.getValue() + " THB");
 
         return convertView;
     }
