@@ -6,5 +6,6 @@
     <color name="colorNormalText">#424242</color>
     <color name="colorMinusValue">#FF4000</color>
     <color name="colorPlusValue">#01DF74</color>
+    <color name="colorDoneButton">#2E64FE</color>
 
 </resources>
