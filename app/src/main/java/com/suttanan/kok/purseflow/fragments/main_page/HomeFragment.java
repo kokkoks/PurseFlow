@@ -46,7 +46,7 @@ public class HomeFragment extends Fragment {
         Firebase.setAndroidContext(v.getContext());
 
         initComponents(v);
-        getDataFromFirebase();
+//        getDataFromFirebase();
 
         userNameTxt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +82,9 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         showUserName();
+        sum = 0;
+        getDataFromFirebase();
+        setSumText();
     }
 
     private void showUserName() {

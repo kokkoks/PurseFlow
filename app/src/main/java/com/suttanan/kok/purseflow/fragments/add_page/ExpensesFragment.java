@@ -180,7 +180,6 @@ public class ExpensesFragment extends Fragment{
         }
 
         valueTextView.setText(value);
-        Toast.makeText(this.getContext(), value, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.adding_expenses_dotBtn)
