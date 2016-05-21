@@ -61,7 +61,7 @@ public class VisualizationFragment extends Fragment {
     private int year, month, day;
     private String category;
 
-    private boolean checkInit = false;
+    private int checkInit = 0;
 
     @Nullable
     @Override
@@ -233,7 +233,7 @@ public class VisualizationFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 month = position;
-                if(checkInit) {
+                if(checkInit > 0) {
                     getDataFromFirebase();
                 }
 //                createGrahpView();
@@ -256,9 +256,11 @@ public class VisualizationFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] categorys = getResources().getStringArray(R.array.category_name);
                 category = categorys[position];
-                if(!checkInit) {
+                if(checkInit == 0) {
                     getDataFromFirebase();
-                    checkInit = true;
+                    checkInit++;
+                } else {
+                    getDataFromFirebase();
                 }
 //                createCategoryGrahpView();
             }
