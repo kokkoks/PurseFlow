@@ -124,14 +124,14 @@ public class ExpensesFragment extends Fragment{
     }
 
     private void removeBackgroundResource() {
-        foodBtn.setBackgroundResource(0);
-        shopBtn.setBackgroundResource(0);
-        familyBtn.setBackgroundResource(0);
-        travelBtn.setBackgroundResource(0);
-        entertainBtn.setBackgroundResource(0);
-        homeBtn.setBackgroundResource(0);
-        healthBtn.setBackgroundResource(0);
-        otherBtn.setBackgroundResource(0);
+        foodBtn.setBackgroundResource(R.drawable.button_category_empty);
+        shopBtn.setBackgroundResource(R.drawable.button_category_empty);
+        familyBtn.setBackgroundResource(R.drawable.button_category_empty);
+        travelBtn.setBackgroundResource(R.drawable.button_category_empty);
+        entertainBtn.setBackgroundResource(R.drawable.button_category_empty);
+        homeBtn.setBackgroundResource(R.drawable.button_category_empty);
+        healthBtn.setBackgroundResource(R.drawable.button_category_empty);
+        otherBtn.setBackgroundResource(R.drawable.button_category_empty);
     }
 
     @OnClick({R.id.adding_expenses_0Btn, R.id.adding_expenses_1Btn,

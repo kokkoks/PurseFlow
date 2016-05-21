@@ -97,6 +97,8 @@ public class IncomesFragment extends Fragment {
         transaction = new String[5];
         value = "";
         valueTextView.setText("0");
+
+        removeBackgroundResource();
     }
 
     @OnClick({R.id.adding_incomes_salaryBtn, R.id.adding_incomes_bussinessBtn,
@@ -104,6 +106,8 @@ public class IncomesFragment extends Fragment {
     public void SelectCategory(Button button) {
         String text = button.getText().toString();
         category = text;
+        removeBackgroundResource();
+        button.setBackgroundResource(R.drawable.button_category);
         Toast.makeText(this.getContext(), text, Toast.LENGTH_SHORT).show();
     }
 
@@ -178,6 +182,13 @@ public class IncomesFragment extends Fragment {
         } else {
             Toast.makeText(this.getContext(), "Please select category", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void removeBackgroundResource() {
+        salaryBtn.setBackgroundResource(R.drawable.button_category_empty);
+        bussinessBtn.setBackgroundResource(R.drawable.button_category_empty);
+        giftBtn.setBackgroundResource(R.drawable.button_category_empty);
+        extraBtn.setBackgroundResource(R.drawable.button_category_empty);
     }
 
     @Override
