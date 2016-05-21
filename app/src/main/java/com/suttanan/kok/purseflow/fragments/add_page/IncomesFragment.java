@@ -119,6 +119,11 @@ public class IncomesFragment extends Fragment {
             }
         } else {
             if(text[1].length() < 2){
+                if(button.getText().equals("0")){
+                    if(text[1].length() == 1){
+                        return;
+                    }
+                }
                 value += button.getText().toString();
             }
         }
@@ -133,8 +138,9 @@ public class IncomesFragment extends Fragment {
             if(!value.contains(".")) {
                 value += ".";
             }
+        } else if(text[1].length() == 0){
+            valueTextView.setText(value + "0");
         }
-        valueTextView.setText(value+"0");
     }
 
 //    @OnClick(R.id.adding_incomes_delBtn)

@@ -130,10 +130,14 @@ public class ExpensesFragment extends Fragment{
             }
         } else {
             if(text[1].length() < 2){
+                if(button.getText().equals("0")){
+                    if(text[1].length() == 1){
+                        return;
+                    }
+                }
                 value += button.getText().toString();
             }
         }
-
         valueTextView.setText(value);
 
 //        Toast.makeText(this.getContext(), value, Toast.LENGTH_SHORT).show();
@@ -145,8 +149,9 @@ public class ExpensesFragment extends Fragment{
             if(!value.contains(".")) {
                 value += ".";
             }
+        } else if(text[1].length() == 0){
+            valueTextView.setText(value + "0");
         }
-        valueTextView.setText(value+"0");
     }
 
 //    @OnClick(R.id.adding_expenses_delBtn)
