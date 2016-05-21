@@ -70,7 +70,7 @@ public class Transaction implements Serializable{
         this.category = category;
     }
 
-    public void setValue(int value) {
+    public void setValue(float value) {
         this.value = value;
     }
 }

@@ -28,4 +28,18 @@
         <item>Health</item>
         <item>Other</item>
     </string-array>
+
+    <string name="category_food">Food</string>
+    <string name="category_shop">Shopping</string>
+    <string name="category_travel">Travel</string>
+    <string name="category_family">Family</string>
+    <string name="category_entertain">Entertain</string>
+    <string name="category_home">Home</string>
+    <string name="category_health">Health</string>
+    <string name="category_other">Others</string>
+
+    <string name="category_salary">Salary</string>
+    <string name="category_business">Business</string>
+    <string name="category_gift">Gift</string>
+    <string name="category_extra">Extras</string>
 </resources>

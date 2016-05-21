@@ -39,7 +39,7 @@
     </style>
 
     <style name="LayoutPrimary">
-        <item name="android:layout_margin">20dp</item>
+        <item name="android:layout_margin">10dp</item>
     </style>
 
     <style name="TextGroup">
@@ -50,6 +50,15 @@
     <style name="TextChild">
         <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/colorNormalText</item>
+    </style>
+
+    <style name="DescriptionLayout">
+        <item name="android:layout_margin">5dp</item>
+    </style>
+    
+    <style name="PrimaryText">
+        <item name="android:textColor">@color/colorNormalText</item>
+        <item name="android:textSize">15dp</item>
     </style>
 
 
