@@ -25,13 +25,12 @@
             style="@style/TransactionTextView"
             android:text=" THB"/>
 
-        <ImageButton
+         <ImageButton
             android:id="@+id/adding_incomes_delBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/delete_icon"
-            android:layout_gravity="center"
-            android:text="X"/>
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 

@@ -77,7 +77,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
         }
         TextView date = (TextView) convertView.findViewById(R.id.information_group_dateTextView);
         TextView value = (TextView) convertView.findViewById(R.id.information_group_value);
-        value.setText(sumGroupValue(groupPosition) + " BTH");
+        value.setText(sumGroupValue(groupPosition) + " THB");
         date.setText(dateStrings.get(groupPosition));
         return convertView;
     }

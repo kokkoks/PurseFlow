@@ -91,6 +91,9 @@ public class LoginActivity extends FragmentActivity{
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
                 profile = currentProfile;
+                showUserProfile();
+                showUserName();
+
             }
         };
     }
@@ -99,6 +102,12 @@ public class LoginActivity extends FragmentActivity{
         userNameTxt  = (TextView) findViewById(R.id.login_name);
         image = (ImageView) findViewById(R.id.login_image);
 
+        showUserProfile();
+        showUserName();
+
+    }
+
+    private void showUserProfile() {
         if(Profile.getCurrentProfile() == null){
             image.setImageResource(R.drawable.anonymous_person);
         }  else {
@@ -108,8 +117,6 @@ public class LoginActivity extends FragmentActivity{
 
 
         }
-        showUserName();
-
     }
 
     @Override
