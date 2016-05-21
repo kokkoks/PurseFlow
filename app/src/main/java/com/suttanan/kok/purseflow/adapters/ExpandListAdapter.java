@@ -1,6 +1,7 @@
 package com.suttanan.kok.purseflow.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,9 @@ import android.widget.TextView;
 
 import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.others.Transaction;
+import com.suttanan.kok.purseflow.others.TransactionType;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,16 +80,34 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
         }
         TextView date = (TextView) convertView.findViewById(R.id.information_group_dateTextView);
         TextView value = (TextView) convertView.findViewById(R.id.information_group_value);
-        value.setText(sumGroupValue(groupPosition) + " THB");
+
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+
+        float num = sumGroupValue(groupPosition);
+        value.setText(df.format(num) + " THB");
+        setTextColor(num, value);
         date.setText(dateStrings.get(groupPosition));
         return convertView;
+    }
+
+    private void setTextColor(float num, TextView value) {
+        if(num < 0 ){
+            value.setTextColor(Color.parseColor("#FF4000"));
+        } else {
+            value.setTextColor(Color.parseColor("#01DF74"));
+        }
     }
 
     private float sumGroupValue(int groupPosition) {
         ArrayList<Transaction> transactions = hashdatas.get(dateStrings.get(groupPosition));
         float sum = 0;
         for(int i = 0; i < transactions.size(); i++){
-            sum += transactions.get(i).getValue();
+            if(transactions.get(i).getType().equals(String.valueOf(TransactionType.EXPENSES))) {
+                sum -= transactions.get(i).getValue();
+            } else {
+                sum += transactions.get(i).getValue();
+            }
         }
         return sum;
     }
@@ -103,7 +124,10 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
         TextView value = (TextView) convertView.findViewById(R.id.information_child_value);
 
         category.setText(child.getCategory());
-        value.setText(child.getValue() + " THB");
+
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        value.setText(df.format(child.getValue()) + " THB");
 
         return convertView;
     }

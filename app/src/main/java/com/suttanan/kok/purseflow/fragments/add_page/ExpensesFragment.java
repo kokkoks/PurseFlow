@@ -233,6 +233,11 @@ public class ExpensesFragment extends Fragment{
         } else {
             Toast.makeText(this.getContext(), "Please select category", Toast.LENGTH_LONG).show();
         }
+    }
 
+    @Override
+    public void onPause() {
+        category = null;
+        super.onPause();
     }
 }

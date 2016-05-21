@@ -161,10 +161,12 @@ public class HomeFragment extends Fragment {
         df.setMaximumFractionDigits(2);
 
         currencyBtn.setText(df.format(sum) + " THB");
-        if(sum >= 0){
-            currencyBtn.setTextColor(this.getResources().getColor(R.color.colorPlusValue));
-        } else {
-            currencyBtn.setTextColor(this.getResources().getColor(R.color.colorMinusValue));
+        if(isAdded()) {
+            if (sum >= 0) {
+                currencyBtn.setTextColor(this.getResources().getColor(R.color.colorPlusValue));
+            } else {
+                currencyBtn.setTextColor(this.getResources().getColor(R.color.colorMinusValue));
+            }
         }
     }
 

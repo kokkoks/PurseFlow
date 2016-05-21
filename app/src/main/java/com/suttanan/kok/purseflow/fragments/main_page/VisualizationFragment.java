@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.facebook.Profile;
 import com.firebase.client.ChildEventListener;
@@ -68,7 +69,7 @@ public class VisualizationFragment extends Fragment {
         ButterKnife.bind(this, v);
 
         initComponents();
-        getDataFromFirebase();
+//        getDataFromFirebase();
 //        createGrahpView();
 
         return v;
@@ -144,8 +145,6 @@ public class VisualizationFragment extends Fragment {
 
     private void initComponents() {
         getDateFromCalendar();
-        setMonthSpinner();
-        setCategorySpinner();
 
         graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
             @Override
@@ -166,6 +165,9 @@ public class VisualizationFragment extends Fragment {
         ref = new Firebase("https://purseflow.firebaseio.com/");
         myFirebaseRef = ref.child("users").child(user);
 
+        setMonthSpinner();
+        setCategorySpinner();
+//        getDataFromFirebase();
     }
 
     private boolean checkDateToQuery(String dateKey, int currentMonth) {
@@ -224,6 +226,7 @@ public class VisualizationFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 month = position;
                 getDataFromFirebase();
+//                createGrahpView();
             }
 
             @Override
@@ -244,6 +247,7 @@ public class VisualizationFragment extends Fragment {
                 String[] categorys = getResources().getStringArray(R.array.category_name);
                 category = categorys[position];
                 getDataFromFirebase();
+//                createCategoryGrahpView();
 //                Toast.makeText(getContext(), category, Toast.LENGTH_SHORT).show();
             }
 
@@ -321,4 +325,5 @@ public class VisualizationFragment extends Fragment {
         boolean checkCategory = tran.getCategory().equalsIgnoreCase(category);
         return checkCategory && checkDate;
     }
+
 }

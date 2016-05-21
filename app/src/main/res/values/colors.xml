@@ -7,5 +7,6 @@
     <color name="colorMinusValue">#FF4000</color>
     <color name="colorPlusValue">#01DF74</color>
     <color name="colorDoneButton">#2E64FE</color>
+    <color name="colorGroupBG">#F2F2F2</color>
 
 </resources>
