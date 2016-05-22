@@ -23,6 +23,7 @@ import com.suttanan.kok.purseflow.activities.LoginActivity;
 import com.suttanan.kok.purseflow.others.Transaction;
 import com.suttanan.kok.purseflow.others.TransactionType;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -36,7 +37,7 @@ public class HomeFragment extends Fragment {
     private Firebase ref;
     private Firebase myFirebaseRef;
 
-    private int sum;
+    private float sum;
 
     @Nullable
     @Override
@@ -45,7 +46,7 @@ public class HomeFragment extends Fragment {
         Firebase.setAndroidContext(v.getContext());
 
         initComponents(v);
-        getDataFromFirebase();
+//        getDataFromFirebase();
 
         userNameTxt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,21 +75,25 @@ public class HomeFragment extends Fragment {
         myFirebaseRef = ref.child("users").child(user);
 
         sum = 0;
+        setSumText();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        ShowUserName();
+        showUserName();
+        sum = 0;
+        getDataFromFirebase();
+        setSumText();
     }
 
-    private void ShowUserName() {
+    private void showUserName() {
         String userName = "User Name : ";
-        if(Profile.getCurrentProfile() != null) {
+        if (Profile.getCurrentProfile() != null) {
             Profile profile = Profile.getCurrentProfile();
-            userName += profile.getFirstName() + " " + profile.getLastName() ;
+            userName += profile.getFirstName() + " " + profile.getLastName();
         } else {
-            userName = "Unautherize";
+            userName = "Tap to Login";
         }
         userNameTxt.setText(userName);
     }
@@ -109,7 +114,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Transaction tran = dataSnapshot.getValue(Transaction.class);
-                        if(tran.getType().equals(String.valueOf(TransactionType.EXPENSES))){
+                        if (tran.getType().equals(String.valueOf(TransactionType.EXPENSES))) {
                             sum -= tran.getValue();
                         } else {
                             sum += tran.getValue();
@@ -154,9 +159,20 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void setSumText(){
-        currencyBtn.setText(sum+"");
+    private void setSumText() {
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+
+        currencyBtn.setText(df.format(sum) + " THB");
+        if(isAdded()) {
+            if (sum >= 0) {
+                currencyBtn.setTextColor(this.getResources().getColor(R.color.colorPlusValue));
+            } else {
+                currencyBtn.setTextColor(this.getResources().getColor(R.color.colorMinusValue));
+            }
+        }
     }
+
     private String retrieveUser() {
         Profile profile = Profile.getCurrentProfile();
         if (profile != null) {

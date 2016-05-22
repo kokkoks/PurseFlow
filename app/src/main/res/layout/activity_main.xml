@@ -23,6 +23,19 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <android.support.v4.view.ViewPager
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:id="@+id/view_pager">
+                </android.support.v4.view.ViewPager>
+            </FrameLayout>
+
             <HorizontalScrollView
                 android:id="@+id/h_scroll_view"
                 android:layout_width="match_parent"
@@ -37,19 +50,6 @@
                 </TabWidget>
 
             </HorizontalScrollView>
-
-
-            <FrameLayout
-                android:id="@android:id/tabcontent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <android.support.v4.view.ViewPager
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    android:id="@+id/view_pager">
-                </android.support.v4.view.ViewPager>
-            </FrameLayout>
         </LinearLayout>
     </TabHost>
 </RelativeLayout>

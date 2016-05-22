@@ -10,7 +10,6 @@ import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.adapters.SupportFragmentTabListener;
 import com.suttanan.kok.purseflow.fragments.main_page.HomeFragment;
 import com.suttanan.kok.purseflow.fragments.main_page.InformationFragment;
-import com.suttanan.kok.purseflow.fragments.main_page.TestFragment;
 import com.suttanan.kok.purseflow.fragments.main_page.VisualizationFragment;
 
 public class MainActivity extends AppCompatActivity{
@@ -31,9 +30,18 @@ public class MainActivity extends AppCompatActivity{
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         actionBar.setDisplayShowTitleEnabled(true);
 
-        ActionBar.Tab homeTab = actionBar.newTab().setText("Home").setTabListener(new SupportFragmentTabListener<HomeFragment>(this, "Home", HomeFragment.class));
-        ActionBar.Tab infoTab = actionBar.newTab().setText("Information").setTabListener(new SupportFragmentTabListener<InformationFragment>(this, "Information", InformationFragment.class));
-        ActionBar.Tab visualTab = actionBar.newTab().setText("Visual").setTabListener(new SupportFragmentTabListener<VisualizationFragment>(this, "Visual", VisualizationFragment.class));
+        ActionBar.Tab homeTab = actionBar.newTab()
+                .setText("Home")
+//                .setIcon(R.drawable.home_tab)
+                .setTabListener(new SupportFragmentTabListener<HomeFragment>(this, "Home", HomeFragment.class));
+        ActionBar.Tab infoTab = actionBar.newTab()
+                .setText("Information")
+//                .setIcon(R.drawable.info_tab)
+                .setTabListener(new SupportFragmentTabListener<InformationFragment>(this, "Information", InformationFragment.class));
+        ActionBar.Tab visualTab = actionBar.newTab()
+//                .setIcon(R.drawable.visual_tab)
+                .setText("Visual")
+                .setTabListener(new SupportFragmentTabListener<VisualizationFragment>(this, "Visual", VisualizationFragment.class));
 
         actionBar.addTab(homeTab);
         actionBar.addTab(infoTab);

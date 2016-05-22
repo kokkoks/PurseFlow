@@ -1,6 +1,7 @@
 package com.suttanan.kok.purseflow.fragments.add_page;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +17,7 @@ import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.activities.AddingDescriptionActivity;
 import com.suttanan.kok.purseflow.others.TransactionType;
 
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -47,10 +50,11 @@ public class ExpensesFragment extends Fragment{
 
     @BindView(R.id.adding_expenses_dotBtn) Button dotBtn;
     @BindView(R.id.adding_expenses_enterBtn) Button enterBtn;
-    @BindView(R.id.adding_expenses_delBtn) Button delBtn;
+    @BindView(R.id.adding_expenses_delBtn) ImageButton delBtn;
 
     private String value;
     private String category;
+
     /*
     0 = user
     1 = date
@@ -69,13 +73,42 @@ public class ExpensesFragment extends Fragment{
 
         initComponents();
 
+        delBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(value.length() > 0){
+                    value = value.substring(0, value.length()-1);
+                    if(value.length() == 0){
+                        value = "0";
+                    }
+                    valueTextView.setText(value);
+                } else{
+                    value = "0";
+                    valueTextView.setText(value);
+                }
+            }
+        });
         return v;
     }
 
     private void initComponents(){
         transaction = new String[5];
-        value = "";
-        valueTextView.setText("0.0");
+        value = "0";
+        valueTextView.setText(value);
+
+//        addBackgroundResource();
+        removeBackgroundResource();
+    }
+
+    private void addBackgroundResource() {
+        foodBtn.setBackgroundResource(R.drawable.button_category);
+        shopBtn.setBackgroundResource(R.drawable.button_category);
+        familyBtn.setBackgroundResource(R.drawable.button_category);
+        travelBtn.setBackgroundResource(R.drawable.button_category);
+        entertainBtn.setBackgroundResource(R.drawable.button_category);
+        homeBtn.setBackgroundResource(R.drawable.button_category);
+        healthBtn.setBackgroundResource(R.drawable.button_category);
+        otherBtn.setBackgroundResource(R.drawable.button_category);
     }
 
     @OnClick({R.id.adding_expenses_foodBtn, R.id.adding_expenses_shopBtn,
@@ -85,7 +118,19 @@ public class ExpensesFragment extends Fragment{
     public void selectCategory(Button button){
         String text = button.getText().toString();
         category = text;
-        Toast.makeText(this.getContext(), category, Toast.LENGTH_SHORT).show();
+        removeBackgroundResource();
+        button.setBackgroundResource(R.drawable.button_category);
+    }
+
+    private void removeBackgroundResource() {
+        foodBtn.setBackgroundResource(R.drawable.button_category_empty);
+        shopBtn.setBackgroundResource(R.drawable.button_category_empty);
+        familyBtn.setBackgroundResource(R.drawable.button_category_empty);
+        travelBtn.setBackgroundResource(R.drawable.button_category_empty);
+        entertainBtn.setBackgroundResource(R.drawable.button_category_empty);
+        homeBtn.setBackgroundResource(R.drawable.button_category_empty);
+        healthBtn.setBackgroundResource(R.drawable.button_category_empty);
+        otherBtn.setBackgroundResource(R.drawable.button_category_empty);
     }
 
     @OnClick({R.id.adding_expenses_0Btn, R.id.adding_expenses_1Btn,
@@ -94,36 +139,103 @@ public class ExpensesFragment extends Fragment{
             R.id.adding_expenses_6Btn, R.id.adding_expenses_7Btn,
             R.id.adding_expenses_8Btn, R.id.adding_expenses_9Btn})
     public void inputNumber(Button button){
-        value += button.getText().toString();
-        valueTextView.setText(value);
+        String[] text = value.split("\\.");
+//        if(text[0].equals("") && button.getText().toString().equals("0")){
+//            return;
+//        }
+//        if(text.length == 1 ) {
+//            if (text[0].length() < 10) {
+//                value += button.getText().toString();
+//            }
+//        } else {
+//            if(text[1].length() < 2){
+//                if(button.getText().equals("0")){
+//                    if(text[1].length() == 1){
+//                        return;
+//                    }
+//                }
+//                value += button.getText().toString();
+//            }
+//        }
+//        valueTextView.setText(value);
+
 //        Toast.makeText(this.getContext(), value, Toast.LENGTH_SHORT).show();
+
+        if(text[0].length() > 10){
+            return;
+        }
+        if(value.equals("0")){
+            if(button.getText().toString().equals("0")){
+            }else {
+                value = button.getText().toString();
+            }
+        } else {
+            if(text.length ==1) {
+                value += button.getText().toString();
+            } else {
+                if(text[1].length() < 2){
+                    value += button.getText().toString();
+                }
+            }
+        }
+
+        valueTextView.setText(value);
     }
 
-    @OnClick(R.id.adding_expenses_delBtn)
-    public void deleteNumber(Button button){
-        if(value.length() > 0){
-            value = value.substring(0, value.length()-1);
-            valueTextView.setText(value);
-        } else{
-            valueTextView.setText("0.0");
+    @OnClick(R.id.adding_expenses_dotBtn)
+    public void inputDot(Button button){
+        String[] text = value.split("\\.");
+//        if(text.length == 1){
+//            if(!value.contains(".")) {
+//                value += ".";
+//            }
+//        } else if(text[1].length() == 0){
+//            valueTextView.setText(value + "0");
+//        }
+        if(value.contains(".")){
+            return;
+        }
+        if(text.length ==1){
+            value +=".";
+            valueTextView.setText(value + "0");
         }
     }
+
+//    @OnClick(R.id.adding_expenses_delBtn)
+//    public void deleteNumber(Button button){
+//        if(value.length() > 0){
+//            value = value.substring(0, value.length()-1);
+//            valueTextView.setText(value);
+//        } else{
+//            valueTextView.setText("0.00");
+//        }
+//    }
 
     @OnClick(R.id.adding_expenses_enterBtn)
     public void enterNextPage(Button button){
-        if(category != null){
-            if(value.equals("")){
-                value = "0";
+        String[] text = value.split("\\.");
+        if(category != null ){
+            if(Float.parseFloat(value) != 0) {
+                if (value.contains(".") && text.length == 1) {
+                    value += "0";
+                }
+                transaction[1] = String.valueOf(TransactionType.EXPENSES);
+                transaction[2] = value;
+                transaction[3] = category;
+                Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
+                intent.putExtra("transaction", transaction);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this.getContext(), "Input invalid number", Toast.LENGTH_LONG).show();
             }
-            transaction[1] = String.valueOf(TransactionType.EXPENSES);
-            transaction[2] = value;
-            transaction[3] = category;
-            Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
-            intent.putExtra("transaction", transaction);
-            startActivity(intent);
         } else {
             Toast.makeText(this.getContext(), "Please select category", Toast.LENGTH_LONG).show();
         }
+    }
 
+    @Override
+    public void onPause() {
+        category = null;
+        super.onPause();
     }
 }

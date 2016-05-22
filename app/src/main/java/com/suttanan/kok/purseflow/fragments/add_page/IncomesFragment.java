@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,7 +64,7 @@ public class IncomesFragment extends Fragment {
     @BindView(R.id.adding_incomes_enterBtn)
     Button enterBtn;
     @BindView(R.id.adding_incomes_delBtn)
-    Button delBtn;
+    ImageButton delBtn;
 
     private String value;
     private String category;
@@ -77,13 +78,27 @@ public class IncomesFragment extends Fragment {
 
         initComponents();
 
+        delBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(value.length() > 0){
+                    value = value.substring(0, value.length()-1);
+                    valueTextView.setText(value);
+                } else{
+                    value = "0";
+                    valueTextView.setText(value);
+                }
+            }
+        });
         return v;
     }
 
     private void initComponents() {
         transaction = new String[5];
         value = "";
-        valueTextView.setText("0.0");
+        valueTextView.setText("0");
+
+        removeBackgroundResource();
     }
 
     @OnClick({R.id.adding_incomes_salaryBtn, R.id.adding_incomes_bussinessBtn,
@@ -91,7 +106,8 @@ public class IncomesFragment extends Fragment {
     public void SelectCategory(Button button) {
         String text = button.getText().toString();
         category = text;
-        Toast.makeText(this.getContext(), text, Toast.LENGTH_SHORT).show();
+        removeBackgroundResource();
+        button.setBackgroundResource(R.drawable.button_category);
     }
 
     @OnClick({R.id.adding_incomes_0Btn, R.id.adding_incomes_1Btn,
@@ -99,36 +115,84 @@ public class IncomesFragment extends Fragment {
             R.id.adding_incomes_4Btn, R.id.adding_incomes_5Btn,
             R.id.adding_incomes_6Btn, R.id.adding_incomes_7Btn,
             R.id.adding_incomes_8Btn, R.id.adding_incomes_9Btn})
-    public void InputNumber(Button button) {
-        value += button.getText().toString();
+    public void inputNumber(Button button) {
+        String[] text = value.split("\\.");
+        if(text[0].length() > 10){
+            return;
+        }
+        if(value.equals("0")){
+            if(button.getText().toString().equals("0")){
+            }else {
+                value = button.getText().toString();
+            }
+        } else {
+            if(text.length ==1) {
+                value += button.getText().toString();
+            } else {
+                if(text[1].length() < 2){
+                    value += button.getText().toString();
+                }
+            }
+        }
+
         valueTextView.setText(value);
-        Toast.makeText(this.getContext(), value, Toast.LENGTH_SHORT).show();
+
     }
 
-    @OnClick(R.id.adding_incomes_delBtn)
-    public void DeleteNumber(Button button) {
-        if (value.length() > 0) {
-            value = value.substring(0, value.length() - 1);
-            valueTextView.setText(value);
-        } else {
-            valueTextView.setText("0.0");
+    @OnClick(R.id.adding_incomes_dotBtn)
+    public void inputDot(Button button){
+        String[] text = value.split("\\.");
+        if(value.contains(".")){
+            return;
+        }
+        if(text.length ==1){
+            value +=".";
+            valueTextView.setText(value + "0");
         }
     }
 
+//    @OnClick(R.id.adding_incomes_delBtn)
+//    public void deleteNumber(Button button) {
+//        if (value.length() > 0) {
+//            value = value.substring(0, value.length() - 1);
+//            valueTextView.setText(value);
+//        } else {
+//            valueTextView.setText("0.0");
+//        }
+//    }
+
     @OnClick(R.id.adding_incomes_enterBtn)
-    public void EnterNextPage(Button button) {
-        if (category != null) {
-            if(value.equals("")) {
-                value = "0";
+    public void enterNextPage(Button button) {
+        String[] text = value.split("\\.");
+        if(category != null ){
+            if(Float.parseFloat(value) != 0) {
+                if (value.contains(".") && text.length == 1) {
+                    value += "0";
+                }
+                transaction[1] = String.valueOf(TransactionType.INCOMES);
+                transaction[2] = value;
+                transaction[3] = category;
+                Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
+                intent.putExtra("transaction", transaction);
+                startActivity(intent);
+            } else {
+                Toast.makeText(this.getContext(), "Input invalid number", Toast.LENGTH_LONG).show();
             }
-            transaction[1] = String.valueOf(TransactionType.INCOMES);
-            transaction[2] = value;
-            transaction[3] = category;
-            Intent intent = new Intent(this.getContext(), AddingDescriptionActivity.class);
-            intent.putExtra("transaction", transaction);
-            startActivity(intent);
         } else {
             Toast.makeText(this.getContext(), "Please select category", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void removeBackgroundResource() {
+        salaryBtn.setBackgroundResource(R.drawable.button_category_empty);
+        bussinessBtn.setBackgroundResource(R.drawable.button_category_empty);
+        giftBtn.setBackgroundResource(R.drawable.button_category_empty);
+        extraBtn.setBackgroundResource(R.drawable.button_category_empty);
+    }
+
+    @Override
+    public void onPause() {
+        category = null;
+        super.onPause();
     }
 }

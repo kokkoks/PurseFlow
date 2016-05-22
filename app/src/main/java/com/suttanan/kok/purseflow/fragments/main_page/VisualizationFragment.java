@@ -1,52 +1,39 @@
 package com.suttanan.kok.purseflow.fragments.main_page;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.FacebookRequestError;
 import com.facebook.Profile;
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.suttanan.kok.purseflow.R;
-import com.suttanan.kok.purseflow.activities.MainActivity;
-import com.suttanan.kok.purseflow.others.ExpensesCategory;
 import com.suttanan.kok.purseflow.others.Transaction;
 import com.suttanan.kok.purseflow.others.TransactionType;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by K.K.K on 4/30/2016.
@@ -63,6 +50,8 @@ public class VisualizationFragment extends Fragment {
     private ArrayList<Transaction>[] dateTransaction;
     private List<String> dateStrings;
 
+    private int sum;
+
     //    @BindView(R.id.visual_dateTextView) TextView dateText;
     @BindView(R.id.visual_graphView) GraphView graph;
     @BindView(R.id.visual_categorySpinner) Spinner categorySpinner;
@@ -72,6 +61,7 @@ public class VisualizationFragment extends Fragment {
     private int year, month, day;
     private String category;
 
+    private int checkInit = 0;
 
     @Nullable
     @Override
@@ -82,7 +72,7 @@ public class VisualizationFragment extends Fragment {
         ButterKnife.bind(this, v);
 
         initComponents();
-        getDataFromFirebase();
+//        getDataFromFirebase();
 //        createGrahpView();
 
         return v;
@@ -158,8 +148,25 @@ public class VisualizationFragment extends Fragment {
 
     private void initComponents() {
         getDateFromCalendar();
+
+        graph.getViewport().setMinX(1.0);
+        graph.getViewport().setMaxX(31.0);
+        graph.getViewport().setXAxisBoundsManual(true);
+
         setMonthSpinner();
         setCategorySpinner();
+
+        graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter(){
+            @Override
+            public String formatLabel(double value, boolean isValueX) {
+                if(isValueX) {
+//                return super.formatLabel(value, isValueX);
+                    return ""+(int)value;
+                }
+
+                return super.formatLabel(value, isValueX);
+            }
+        });
 //        showDate(year, month + 1, day);
         dateStrings = new ArrayList<String>();
         hashdatas = new HashMap<String, ArrayList<Transaction>>();
@@ -168,6 +175,7 @@ public class VisualizationFragment extends Fragment {
         ref = new Firebase("https://purseflow.firebaseio.com/");
         myFirebaseRef = ref.child("users").child(user);
 
+//        getDataFromFirebase();
     }
 
     private boolean checkDateToQuery(String dateKey, int currentMonth) {
@@ -225,7 +233,10 @@ public class VisualizationFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 month = position;
-                getDataFromFirebase();
+                if(checkInit > 0) {
+                    getDataFromFirebase();
+                }
+//                createGrahpView();
             }
 
             @Override
@@ -245,8 +256,13 @@ public class VisualizationFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String[] categorys = getResources().getStringArray(R.array.category_name);
                 category = categorys[position];
-                getDataFromFirebase();
-//                Toast.makeText(getContext(), category, Toast.LENGTH_SHORT).show();
+                if(checkInit == 0) {
+                    getDataFromFirebase();
+                    checkInit++;
+                } else {
+                    getDataFromFirebase();
+                }
+//                createCategoryGrahpView();
             }
 
             @Override
@@ -272,7 +288,7 @@ public class VisualizationFragment extends Fragment {
                 if (transactions == null) {
                     dataPoints[i] = new DataPoint(i, 0);
                 } else {
-                    int sum = 0;
+                    sum = 0;
                     for (int j = 0; j < transactions.size(); j++) {
                         if (transactions.get(j).getType().equals(String.valueOf(TransactionType.EXPENSES))) {
                             sum += transactions.get(j).getValue();
@@ -308,6 +324,10 @@ public class VisualizationFragment extends Fragment {
             LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(dataPoints);
             graph.addSeries(series);
         }
+
+//        graph.getViewport().setMinX(1.0);
+//        graph.getViewport().setMaxX(31.0);
+//        graph.getViewport().setXAxisBoundsManual(true);
     }
 
     private boolean checkCategoryAndDate(Transaction tran){
@@ -316,16 +336,4 @@ public class VisualizationFragment extends Fragment {
         return checkCategory && checkDate;
     }
 
-    @OnClick(R.id.button)
-    void toastSomething(){
-        String test = "";
-        for(int i= 0; i < dateTransaction.length; i++){
-            if(dateTransaction[i] == null){
-                test += "0-";
-            } else {
-                test += "1-";
-            }
-        }
-        Toast.makeText(this.getContext(), test, Toast.LENGTH_SHORT).show();
-    }
 }

@@ -55,9 +55,16 @@ public class AddingDescriptionActivity extends Activity {
 
 //        showTransaction();
         initComponents();
+        mappingComponents();
         GetDateFromCalendar();
 
         showDate(year, month + 1, day);
+    }
+
+    private void mappingComponents() {
+        value = transaction[2];
+
+        valueTextView.setText(Float.parseFloat(value)+"");
     }
 
     private void showTransaction() {
@@ -102,7 +109,7 @@ public class AddingDescriptionActivity extends Activity {
 
         Firebase fireRef = CreateFirebaseRef(ref);
         Transaction tran = new Transaction(date, transaction[1],
-                Integer.parseInt(transaction[2]), transaction[3], transaction[4]);
+                Float.parseFloat(transaction[2]), transaction[3], transaction[4]);
         fireRef.push().setValue(tran);
 
         Intent intent = new Intent(this, MainActivity.class);

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/cardview_light_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,7 +11,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:gravity="right">
 
@@ -18,203 +20,197 @@
             android:id="@+id/adding_expenses_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/TransactionTextView"
+            android:layout_gravity="center"
             android:text=""/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="THB"/>
+                android:layout_gravity="center"
+                style="@style/TransactionTextView"
+                android:text=" THB"/>
 
-            <Button
+            <ImageButton
                 android:id="@+id/adding_expenses_delBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/delete_icon"
                 android:text="X"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/adding_expenses_foodBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="food"/>
+            <LinearLayout
+                style="@style/ButtonLinearLayout"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/adding_expenses_shopBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="shop"/>
+                <Button
+                    android:id="@+id/adding_expenses_foodBtn"
+                    style="@style/ButtonLayout.category"
+                    android:drawableTop="@drawable/expanse_food"
+                    android:text="food"/>
 
-            <Button
-                android:id="@+id/adding_expenses_travelBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="travel"/>
+                <Button
+                    android:id="@+id/adding_expenses_shopBtn"
+                    style="@style/ButtonLayout.category"
+                    android:drawableTop="@drawable/expanse_shop"
+                    android:text="shop"/>
 
-            <Button
-                android:id="@+id/adding_expenses_familyBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="family"/>
+                <Button
+                    android:id="@+id/adding_expenses_travelBtn"
+                    style="@style/ButtonLayout.category"
+                    android:drawableTop="@drawable/expanse_travel"
+                    android:text="travel"/>
+                    <!--android:src="@drawable/expan"-->
 
+                <Button
+                    android:id="@+id/adding_expenses_familyBtn"
+                    style="@style/ButtonLayout.category"
+                    android:drawableTop="@drawable/expanse_family"
+                    android:text="family"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ButtonLinearLayout"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/adding_expenses_entertainBtn"
+                    style="@style/ButtonLayout.category"
+                    android:drawableTop="@drawable/expanse_entertain"
+                    android:text="entertain"/>
+
+                <Button
+                    android:id="@+id/adding_expenses_homeBtn"
+                    style="@style/ButtonLayout.category"
+                    android:drawableTop="@drawable/expanse_home"
+                    android:text="home"/>
+
+                <Button
+                    android:id="@+id/adding_expenses_healthBtn"
+                    style="@style/ButtonLayout.category"
+                    android:drawableTop="@drawable/expanse_health"
+                    android:text="health"/>
+
+                <Button
+                    android:id="@+id/adding_expenses_otherBtn"
+                    style="@style/ButtonLayout.category"
+                    android:drawableTop="@drawable/expanse_other"
+                    android:text="other"/>
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/adding_expenses_entertainBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="entertain"/>
+            <LinearLayout
+                style="@style/ButtonLinearLayout"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/adding_expenses_homeBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="home"/>
+                <Button
+                    android:id="@+id/adding_expenses_1Btn"
+                    style="@style/ButtonLayout.num"
+                    android:background="@drawable/button_number"
+                    android:text="1" />
 
-            <Button
-                android:id="@+id/adding_expenses_healthBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="health"/>
+                <Button
+                    android:id="@+id/adding_expenses_2Btn"
+                    style="@style/ButtonLayout.num"
+                    android:background="@drawable/button_number"
+                    android:text="2"/>
 
-            <Button
-                android:id="@+id/adding_expenses_otherBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="other"/>
+                <Button
+                    android:id="@+id/adding_expenses_3Btn"
+                    style="@style/ButtonLayout.num"
+                    android:background="@drawable/button_number"
+                    android:text="3"/>
 
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ButtonLinearLayout"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/adding_expenses_4Btn"
+                    style="@style/ButtonLayout.num"
+                    android:background="@drawable/button_number"
+                    android:text="4"/>
+
+                <Button
+                    android:id="@+id/adding_expenses_5Btn"
+                    style="@style/ButtonLayout.num"
+                    android:background="@drawable/button_number"
+                    android:text="5"/>
+
+                <Button
+                    android:id="@+id/adding_expenses_6Btn"
+                    style="@style/ButtonLayout.num"
+                    android:background="@drawable/button_number"
+                    android:text="6"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ButtonLinearLayout"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/adding_expenses_7Btn"
+                    style="@style/ButtonLayout.num"
+                    android:background="@drawable/button_number"
+                    android:text="7"/>
+
+                <Button
+                    android:id="@+id/adding_expenses_8Btn"
+                    style="@style/ButtonLayout.num"
+                    android:background="@drawable/button_number"
+                    android:text="8"/>
+
+                <Button
+                    android:id="@+id/adding_expenses_9Btn"
+                    style="@style/ButtonLayout.num"
+                    android:background="@drawable/button_number"
+                    android:text="9"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/ButtonLinearLayout"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/adding_expenses_dotBtn"
+                    style="@style/ButtonLayout.num"
+                    android:background="@drawable/button_number"
+                    android:text="."/>
+
+                <Button
+                    android:id="@+id/adding_expenses_0Btn"
+                    style="@style/ButtonLayout.num"
+                    android:background="@drawable/button_number"
+                    android:text="0"/>
+
+                <Button
+                    android:id="@+id/adding_expenses_enterBtn"
+                    style="@style/ButtonLayout.num"
+                    android:background="@drawable/button_number"
+                    android:text="enter"/>
+
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/adding_expenses_1Btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="1"/>
-
-            <Button
-                android:id="@+id/adding_expenses_2Btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="2"/>
-
-            <Button
-                android:id="@+id/adding_expenses_3Btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="3"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/adding_expenses_4Btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="4"/>
-
-            <Button
-                android:id="@+id/adding_expenses_5Btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="5"/>
-
-            <Button
-                android:id="@+id/adding_expenses_6Btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="6"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/adding_expenses_7Btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="7"/>
-
-            <Button
-                android:id="@+id/adding_expenses_8Btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="8"/>
-
-            <Button
-                android:id="@+id/adding_expenses_9Btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="9"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/adding_expenses_dotBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="."/>
-
-            <Button
-                android:id="@+id/adding_expenses_0Btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="0"/>
-
-            <Button
-                android:id="@+id/adding_expenses_enterBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="enter"/>
-
-        </LinearLayout>
-
     </LinearLayout>
 
 </RelativeLayout>
