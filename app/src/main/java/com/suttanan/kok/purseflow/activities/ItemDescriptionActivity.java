@@ -3,12 +3,9 @@ package com.suttanan.kok.purseflow.activities;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.others.Transaction;
-
-import org.w3c.dom.Text;
 
 import java.util.Date;
 
@@ -32,7 +29,6 @@ public class ItemDescriptionActivity extends AppCompatActivity {
 
         initComponents();
         mapValue();
-        Toast.makeText(this, transaction.getCategory(), Toast.LENGTH_SHORT).show();
     }
 
     private void mapValue() {

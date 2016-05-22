@@ -108,7 +108,6 @@ public class IncomesFragment extends Fragment {
         category = text;
         removeBackgroundResource();
         button.setBackgroundResource(R.drawable.button_category);
-        Toast.makeText(this.getContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick({R.id.adding_incomes_0Btn, R.id.adding_incomes_1Btn,
