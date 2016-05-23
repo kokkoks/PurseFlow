@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.facebook.Profile;
 import com.suttanan.kok.purseflow.R;
 import com.suttanan.kok.purseflow.others.Transaction;
 
@@ -13,6 +14,8 @@ import java.util.Date;
  * Created by KOKKOK on 5/20/2016.
  */
 public class ItemDescriptionActivity extends AppCompatActivity {
+
+    final private String unautherizeUser = "Unautherize";
 
     private Transaction transaction;
     private TextView valueText;
@@ -27,8 +30,15 @@ public class ItemDescriptionActivity extends AppCompatActivity {
         setContentView(R.layout.item_description_layout);
         transaction = (Transaction) getIntent().getSerializableExtra("transaction");
 
+
+
+
         initComponents();
+
+
         mapValue();
+
+
     }
 
     private void mapValue() {
@@ -48,5 +58,14 @@ public class ItemDescriptionActivity extends AppCompatActivity {
         descriptoinText = (TextView) findViewById(R.id.item_description_textDescription);
         dateText = (TextView) findViewById(R.id.item_description_date);
         typeText = (TextView) findViewById(R.id.item_description_type);
+    }
+
+
+    private String retrieveUser() {
+        Profile profile = Profile.getCurrentProfile();
+        if (profile != null) {
+            return profile.getId();
+        }
+        return unautherizeUser;
     }
 }

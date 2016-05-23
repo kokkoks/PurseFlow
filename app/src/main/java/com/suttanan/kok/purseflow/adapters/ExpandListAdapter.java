@@ -1,14 +1,19 @@
 package com.suttanan.kok.purseflow.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.facebook.Profile;
+import com.firebase.client.Firebase;
 import com.suttanan.kok.purseflow.R;
+import com.suttanan.kok.purseflow.activities.MainActivity;
 import com.suttanan.kok.purseflow.others.Transaction;
 import com.suttanan.kok.purseflow.others.TransactionType;
 
@@ -22,15 +27,24 @@ import java.util.List;
  */
 public class ExpandListAdapter extends BaseExpandableListAdapter {
 
+    final private String unautherizeUser = "Unautherize";
     private Context context;
     private HashMap<String, ArrayList<Transaction>> hashdatas;
     private  List<String> dateStrings;
+
+    private Firebase ref;
+    private Firebase myFirebaseRef;
+    private String user;
 
     public ExpandListAdapter(Context context, HashMap<String, ArrayList<Transaction>> hashdatas,
                              List<String> dateStrings){
         this.context = context;
         this.hashdatas = hashdatas;
         this.dateStrings = dateStrings;
+
+        String user = retrieveUser();
+        ref = new Firebase("https://purseflow.firebaseio.com/");
+        myFirebaseRef = ref.child("users").child(user);
     }
 
     @Override
@@ -71,7 +85,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+    public View getGroupView(final int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
         if (convertView == null) {
             LayoutInflater inf = (LayoutInflater) context
@@ -80,6 +94,7 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
         }
         TextView date = (TextView) convertView.findViewById(R.id.information_group_dateTextView);
         TextView value = (TextView) convertView.findViewById(R.id.information_group_value);
+        ImageButton bin = (ImageButton) convertView.findViewById(R.id.information_group_bin);
 
         DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(2);
@@ -88,6 +103,17 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
         value.setText(df.format(num) + " THB");
         setTextColor(num, value);
         date.setText(dateStrings.get(groupPosition));
+
+        bin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myFirebaseRef.child(dateStrings.get(groupPosition)).removeValue();
+
+                Intent intent = new Intent(v.getContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                v.getContext().startActivity(intent);
+            }
+        });
         return convertView;
     }
 
@@ -135,5 +161,13 @@ public class ExpandListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    private String retrieveUser() {
+        Profile profile = Profile.getCurrentProfile();
+        if (profile != null) {
+            return profile.getId();
+        }
+        return unautherizeUser;
     }
 }

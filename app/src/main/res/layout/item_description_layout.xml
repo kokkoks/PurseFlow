@@ -122,5 +122,6 @@
                     style="@style/PrimaryText" />
             </FrameLayout>
         </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

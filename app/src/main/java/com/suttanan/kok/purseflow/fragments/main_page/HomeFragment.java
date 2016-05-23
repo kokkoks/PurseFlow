@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.Profile;
 import com.firebase.client.ChildEventListener;
@@ -24,7 +23,6 @@ import com.suttanan.kok.purseflow.others.Transaction;
 import com.suttanan.kok.purseflow.others.TransactionType;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 /**
  * Created by K.K.K on 4/30/2016.
